@@ -460,6 +460,7 @@ $("tabTapes").addEventListener("click", () => setView("tapes"));
 
 // ---------- tapes ----------
 const LS_TAPES = "wp.tapes.v1";
+let lastTrackKey = "";
 let tapes = [], tapesAt = 0, tapesLocal = false, tapesDirty = false, curTape = null, tapesT = null, tapeChain = Promise.resolve();
 try {
   const v = JSON.parse(localStorage.getItem(LS_TAPES) || "null");
@@ -502,8 +503,11 @@ function renderTapes() {
   if (!t) return;
   if (document.activeElement !== $("tapeName")) $("tapeName").value = t.name;
   const songs = t.songIds.map(id => studio.songs.find(s => s.id === id)).filter(Boolean);
+  const trackKey = t.id + ":" + songs.map(s => s.id).join(",");
+  const animTracks = trackKey !== lastTrackKey;
+  lastTrackKey = trackKey;
   $("trackList").innerHTML = songs.length ? songs.map((s, i) => `
-    <li class="track">
+    <li class="track${animTracks ? " in" : ""}" style="--i:${i}">
       <span class="tno">${String(i + 1).padStart(2, "0")}</span>
       <button type="button" class="ttitle" data-open="${esc(s.id)}" title="Open in Write">${esc(songLabel(s))}</button>
       <span class="tmeta">${s.bpm ? Math.round(s.bpm) + " BPM" : ""}${s.bpm && s.key ? " · " : ""}${s.key ? esc(s.key.replace(" major", "").replace(" minor", "m")) : ""}${s.beatDur ? ` · ${fmt(s.beatDur)}` : ""}</span>

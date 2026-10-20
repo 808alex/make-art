@@ -121,7 +121,7 @@ function renderGrid(){
   g.innerHTML = state.cards.map((c, i) => {
     const label = POOLS[c.cat] ? POOLS[c.cat].label : c.cat;
     const inStash = state.stash.includes(c.w);
-    return `<div class="card${c.pinned ? " pinned" : ""}${c.fresh ? " fresh" : ""}">
+    return `<div class="card${c.pinned ? " pinned" : ""}${c.fresh ? " fresh" : ""}" style="--i:${i}">
       <button class="word" type="button" data-copy="${i}" aria-label="Copy ${esc(c.w)}">
         <span class="w">${esc(c.w)}</span>
         <span class="tag">${esc(label)}${c.note ? ` · <b>${esc(c.note)}</b>` : ""}</span>

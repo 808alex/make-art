@@ -3,17 +3,38 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Schibsted+Grotesk:wght@400;600;800&family=JetBrains+Mono:wght@500;700&family=Jacquard+24&family=Geist+Mono:wght@400;500;600;700&display=swap">
+<script>
+  // pick the saved look before anything paints, so there's no flash of the other one
+  (function () {
+    var s = "ug";
+    try { s = localStorage.getItem("ma.skin") || "ug"; } catch (e) {}
+    document.documentElement.dataset.skin = s === "mono" ? "mono" : "ug";
+    document.documentElement.classList.add("boot");
+  })();
+</script>
 <script async src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.2/build/mp4-muxer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/look.css">
+
+<div class="fx fx-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="fx fx-scan" aria-hidden="true"></div>
+<div class="fx fx-grain" aria-hidden="true"></div>
 
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1>Make <span>Art</span></h1>
+      <h1 data-text="make art">Make <span>Art</span></h1>
       <span class="label">Studio · rhymes · words</span>
     </div>
-    <p class="sub">Write over your beat with the rhyme finder and word generator open beside you. Songs save to your Claude account, so they're on every device you sign in on.</p>
+    <div class="headright">
+      <div class="skin" id="skinSwitch" role="group" aria-label="Look">
+        <button type="button" data-skin="mono" aria-pressed="false">Mono</button>
+        <button type="button" data-skin="ug" aria-pressed="true">Underground</button>
+      </div>
+      <p class="sub">Write over your beat with the rhyme finder and word generator open beside you. Songs save to your Claude account, so they're on every device you sign in on.</p>
+    </div>
   </header>
 
   <div class="app">
@@ -111,7 +132,7 @@
       </div>
     </section>
 
-    <aside class="tools" id="tools" aria-label="Rhymes and words">
+    <aside class="tools" id="tools" aria-label="Rhymes and words" data-lenis-prevent>
       <div class="tapmode">
         <span class="label">Tapping a word</span>
         <div class="seg" id="tapMode">
@@ -135,7 +156,7 @@
     </div>
     <div class="heard" id="heard">Loading 42,000 words…</div>
     <div class="cols" id="rhymeCols"></div>
-    <div class="legend"><span>100 = perfect rhyme</span><span>85–99 = tight slant</span><span>75–84 = flows</span><span>multi = matches the syllable before too</span><span>yellow = known saying</span></div>
+    <div class="legend"><span>100 = perfect rhyme</span><span>85–99 = tight slant</span><span>75–84 = flows</span><span>multi = matches the syllable before too</span><span>filled = known saying</span></div>
   </section>
 
       <section class="gen" id="gen">
@@ -225,3 +246,4 @@
 <script src="js/finder.js"></script>
 <script src="js/studio.js"></script>
 <script src="js/extras.js"></script>
+<script src="js/look.js"></script>

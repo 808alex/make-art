@@ -27,6 +27,11 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Phrase mode: type 2–3 words and get phrases that match the whole flow
 - Results grouped into Everyday, Brands & buzz, Archive pieces and Rare & distinct
 
+**Looks**
+- Mono: black and white, follows your light/dark setting
+- Underground: blackletter chrome logo, blood red, grain, scanlines, glitch hovers
+- Motion: smooth scrolling on desktop, click ripples, staggered results, scroll reveals, and a play button and logo that pulse with the beat
+
 **Word generator**
 - Mostly calm everyday words, mixed with slang, labels, cars and places
 - Pin and stash words, add your own
@@ -35,13 +40,15 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 
 ```
 index.html        page markup (no <html>/<head>; the host adds that)
-css/styles.css    all styles, colour tokens at the top, light and dark themes
+css/styles.css    layout and components; colour and font tokens for both looks at the top
+css/look.css      look-specific styling (mono, underground) and all motion
 js/engine.js      rhyme engine: pronunciations, scoring, phrase builder
 js/sayings.js     sayings used by the phrase column
 js/generator.js   word pools, generator, stash, shared helpers (esc, toast, copy)
 js/finder.js      rhyme finder UI
 js/studio.js      songs, saving and sync, beat loading and upload, player basics
 js/extras.js      rhyme colours, syllables, A–B loop, speed, BPM/key, tapes
+js/look.js        look switch, click ripples, scroll reveal, smooth scroll, beat pulse
 data/rhymes.txt   ~42k words with encoded pronunciations (built by tools/)
 tools/            scripts that build data/rhymes.txt
 ```

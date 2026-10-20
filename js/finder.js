@@ -65,8 +65,8 @@ function renderRhymes(){
     if (k === "phrases" && !list.length) return "";
     const base = k === "phrases" ? 48 : 36;
     const cap = rhymeOpen[k] ? 200 : base;
-    const items = list.slice(0, cap).map(r =>
-      `<button type="button" class="rw${r.s === 100 ? " top" : ""}${r.m >= 0.9 && r.s >= 85 ? " multi" : ""}${r.say ? " say" : ""}" data-rcopy="${esc(r.w)}"><span>${esc(r.w)}</span><i>${r.s}</i></button>`).join("");
+    const items = list.slice(0, cap).map((r, ri) =>
+      `<button type="button" class="rw in${r.s === 100 ? " top" : ""}${r.m >= 0.9 && r.s >= 85 ? " multi" : ""}${r.say ? " say" : ""}" style="--i:${Math.min(ri, 36)}" data-rcopy="${esc(r.w)}"><span>${esc(r.w)}</span><i>${r.s}</i></button>`).join("");
     const more = list.length > base ? `<button type="button" class="ghost more" data-rmore="${k}">${rhymeOpen[k] ? "Show fewer" : `Show ${Math.min(list.length, 200) - base} more`}</button>` : "";
     return `<div class="col${k === "phrases" ? " wide" : ""}"><h3><span>${label}</span><span>${list.length}</span></h3>
       ${list.length ? `<div class="rlist">${items}</div>${more}` : `<p class="empty">Nothing at this rating. Drop the slider a bit.</p>`}</div>`;
