@@ -1,33 +1,36 @@
 /* Layout: header, then a two-column app (lyrics studio left, scrolling tools rail right) and a fixed beat player.
-   Two looks share one set of tokens: "mono" (black and white, follows light/dark) and "ug" (underground, dark only). */
+   Two looks share one set of tokens: "mono" (soft greys, follows light/dark) and "ug" (underground, dark only). */
 :root {
-  /* mono, light */
-  --bg: #ffffff; --panel: #f4f4f4; --ink: #0a0a0a; --muted: #6c6c6c; --line: #dcdcdc; --line-strong: #0a0a0a;
-  --accent: #0a0a0a; --accent-ink: #ffffff; --sticker: #0a0a0a; --sticker-ink: #ffffff;
-  --pl-bg: #0a0a0a; --pl-ink: #ffffff; --pl-accent: #ffffff; --pl-accent-ink: #0a0a0a;
+  /* mono, light: soft grey page, lighter panels, charcoal ink */
+  --bg: #ebebe8; --panel: #f9f9f7; --ink: #232326; --muted: #6f6f75; --line: #d6d6d2; --line-strong: #8d8d92;
+  --accent: #36363b; --accent-ink: #f7f7f5; --sticker: #dcdcd7; --sticker-ink: #232326;
+  --pl-bg: #26262a; --pl-ink: #ededeb; --pl-accent: #ededeb; --pl-accent-ink: #26262a;
+  --shadow: 0 1px 2px rgba(25, 25, 30, .05), 0 12px 32px -18px rgba(25, 25, 30, .22);
   --glow: 0 0 0 transparent;
-  --r1: #e0a08a; --r2: #8eb2dc; --r3: #93c9a8; --r4: #c2a4e0; --r5: #e4a2bf; --r6: #d8c27e; --r7: #87cbcd; --r8: #aeaadf;
+  --r1: #e3a58f; --r2: #93b6de; --r3: #98cbab; --r4: #c5a9e2; --r5: #e6a7c2; --r6: #dbc684; --r7: #8dcdce; --r8: #b3afe1;
   --display: "Anton", "Arial Narrow", Impact, sans-serif;
   --body: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
-  --rad: 3px; --rad-lg: 4px; --rad-pill: 999px; --bw: 1px;
+  --rad: 8px; --rad-lg: 14px; --rad-pill: 999px; --bw: 1px;
   --ease: cubic-bezier(.2, .8, .2, 1); --spring: cubic-bezier(.34, 1.5, .6, 1);
   --beatdur: .5s;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #000000; --panel: #0d0d0d; --ink: #f2f2f2; --muted: #8b8b8b; --line: #242424; --line-strong: #f2f2f2;
-    --accent: #f2f2f2; --accent-ink: #000000; --sticker: #f2f2f2; --sticker-ink: #000000;
-    --pl-bg: #f2f2f2; --pl-ink: #000000; --pl-accent: #000000; --pl-accent-ink: #f2f2f2;
-    --r1: #b8735e; --r2: #5f87b5; --r3: #5f9f78; --r4: #9478b8; --r5: #b8728f; --r6: #ad9550; --r7: #4fa0a3; --r8: #7f7bb8;
+    --bg: #151517; --panel: #1f1f23; --ink: #e7e7ea; --muted: #9b9ba2; --line: #303036; --line-strong: #64646b;
+    --accent: #d6d6da; --accent-ink: #18181b; --sticker: #34343a; --sticker-ink: #e7e7ea;
+    --pl-bg: #232327; --pl-ink: #e7e7ea; --pl-accent: #e7e7ea; --pl-accent-ink: #18181b;
+    --shadow: inset 0 1px 0 rgba(255, 255, 255, .03), 0 14px 36px -18px rgba(0, 0, 0, .7);
+    --r1: #c27f6a; --r2: #6b93c2; --r3: #6aab84; --r4: #a184c4; --r5: #c47e9c; --r6: #b9a05b; --r7: #5aacaf; --r8: #8b87c4;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #000000; --panel: #0d0d0d; --ink: #f2f2f2; --muted: #8b8b8b; --line: #242424; --line-strong: #f2f2f2;
-  --accent: #f2f2f2; --accent-ink: #000000; --sticker: #f2f2f2; --sticker-ink: #000000;
-  --pl-bg: #f2f2f2; --pl-ink: #000000; --pl-accent: #000000; --pl-accent-ink: #f2f2f2;
-  --r1: #b8735e; --r2: #5f87b5; --r3: #5f9f78; --r4: #9478b8; --r5: #b8728f; --r6: #ad9550; --r7: #4fa0a3; --r8: #7f7bb8;
+  --bg: #151517; --panel: #1f1f23; --ink: #e7e7ea; --muted: #9b9ba2; --line: #303036; --line-strong: #64646b;
+  --accent: #d6d6da; --accent-ink: #18181b; --sticker: #34343a; --sticker-ink: #e7e7ea;
+  --pl-bg: #232327; --pl-ink: #e7e7ea; --pl-accent: #e7e7ea; --pl-accent-ink: #18181b;
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, .03), 0 14px 36px -18px rgba(0, 0, 0, .7);
+  --r1: #c27f6a; --r2: #6b93c2; --r3: #6aab84; --r4: #a184c4; --r5: #c47e9c; --r6: #b9a05b; --r7: #5aacaf; --r8: #8b87c4;
   color-scheme: dark;
 }
 /* underground: always dark, blood red, chrome, grain */
@@ -41,7 +44,7 @@
   --display: "Jacquard 24", "UnifrakturMaguntia", "Old English Text MT", serif;
   --body: "Geist Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
   --mono: "Geist Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
-  --rad: 2px; --rad-lg: 3px; --rad-pill: 2px;
+  --rad: 2px; --rad-lg: 3px; --rad-pill: 2px; --shadow: none;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
