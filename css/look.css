@@ -93,9 +93,17 @@ html.lenis, html.lenis body { height: auto; }
 :root:not([data-skin="ug"]) h1 span { padding: 0 .1em; margin-left: .06em; }
 :root:not([data-skin="ug"]) h2 { text-transform: uppercase; letter-spacing: .02em; font-size: 1.35rem; }
 :root:not([data-skin="ug"]) .card .w { font-size: 1.45rem; letter-spacing: .01em; }
-:root:not([data-skin="ug"]) .studio, :root:not([data-skin="ug"]) .finder { border-color: var(--line); }
+:root:not([data-skin="ug"]) .studio, :root:not([data-skin="ug"]) .finder { border-color: var(--line); box-shadow: var(--shadow); }
+:root:not([data-skin="ug"]) .card, :root:not([data-skin="ug"]) .track { box-shadow: var(--shadow); }
 :root:not([data-skin="ug"]) .card:hover { border-color: var(--line-strong); }
-:root:not([data-skin="ug"]) ::selection { background: var(--ink); color: var(--bg); }
+:root:not([data-skin="ug"]) .chip[aria-pressed="true"], :root:not([data-skin="ug"]) .tool.toggle[aria-pressed="true"],
+:root:not([data-skin="ug"]) .skin button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+:root:not([data-skin="ug"]) .beatbtn, :root:not([data-skin="ug"]) .reroll { background: var(--accent); color: var(--accent-ink); }
+:root:not([data-skin="ug"]) .rw.say { border-color: transparent; }
+:root:not([data-skin="ug"]) .heard b { background: var(--accent); color: var(--accent-ink); }
+:root:not([data-skin="ug"]) .rw:hover, :root:not([data-skin="ug"]) .tool:hover, :root:not([data-skin="ug"]) .ghost:hover,
+:root:not([data-skin="ug"]) .fact:hover { border-color: var(--line-strong); }
+:root:not([data-skin="ug"]) ::selection { background: var(--accent); color: var(--accent-ink); }
 .fx { display: none; }
 
 /* ---------- underground ---------- */

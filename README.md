@@ -28,7 +28,7 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Results grouped into Everyday, Brands & buzz, Archive pieces and Rare & distinct
 
 **Looks**
-- Mono: black and white, follows your light/dark setting
+- Mono: soft greys and charcoal, follows your light/dark setting
 - Underground: blackletter chrome logo, blood red, grain, scanlines, glitch hovers
 - Motion: smooth scrolling on desktop, click ripples, staggered results, scroll reveals, and a play button and logo that pulse with the beat
 
