@@ -67,7 +67,7 @@
       });
     }, { rootMargin: "0px 0px -6% 0px", threshold: 0.06 });
     const watch = () => {
-      document.querySelectorAll(".tools > *, .gen .controls, .gen .grid, .keys, #trackList, .finder .cols").forEach(el => {
+      document.querySelectorAll(".finder .cols, .keys, #trackList").forEach(el => {
         if (el.dataset.revealed) return;
         el.dataset.revealed = "1";
         if (el.getBoundingClientRect().top > innerHeight * 0.92) { el.classList.add("pre"); io.observe(el); }
@@ -87,16 +87,21 @@
   }
 
   // ---------- tabs: sliding underline + view transitions ----------
-  const stabs = document.querySelector(".stabs");
-  const line = document.createElement("span");
-  line.className = "tabline";
-  stabs.appendChild(line);
+  const bars = [...document.querySelectorAll(".stabs")].map(bar => {
+    const line = document.createElement("span");
+    line.className = "tabline";
+    bar.appendChild(line);
+    return [bar, line];
+  });
   function placeTabLine() {
-    const sel = stabs.querySelector('[aria-selected="true"]');
-    if (!sel) return;
-    line.style.width = sel.offsetWidth + "px";
-    line.style.transform = `translateX(${sel.offsetLeft}px)`;
+    bars.forEach(([bar, line]) => {
+      const sel = bar.querySelector('[aria-selected="true"]');
+      if (!sel || !sel.offsetWidth) return;
+      line.style.width = sel.offsetWidth + "px";
+      line.style.transform = `translateX(${sel.offsetLeft}px)`;
+    });
   }
+  window.placeTabLines = placeTabLine;
   const baseSetView = setView;
   setView = function (v) {
     const was = $("writeView").hidden ? "tapes" : "write";

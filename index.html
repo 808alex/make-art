@@ -133,73 +133,84 @@
     </section>
 
     <aside class="tools" id="tools" aria-label="Rhymes and words" data-lenis-prevent>
-      <div class="tapmode">
-        <span class="label">Tapping a word</span>
-        <div class="seg" id="tapMode">
-          <button type="button" data-tap="insert" aria-pressed="true">Adds to lyrics</button>
-          <button type="button" data-tap="copy" aria-pressed="false">Copies it</button>
+      <div class="toolbar">
+        <div class="stabs ttabs" role="tablist" aria-label="Tools">
+          <button type="button" role="tab" id="ttRhymes" data-tool="rhymes" aria-selected="true" aria-controls="rhymesPanel">Rhymes</button>
+          <button type="button" role="tab" id="ttWords" data-tool="words" aria-selected="false" aria-controls="wordsPanel">Words</button>
+        </div>
+        <div class="tapmode">
+          <span class="label">Tapping a word</span>
+          <div class="seg" id="tapMode">
+            <button type="button" data-tap="insert" aria-pressed="true">Adds to lyrics</button>
+            <button type="button" data-tap="copy" aria-pressed="false">Copies it</button>
+          </div>
         </div>
       </div>
 
-  <section class="finder" id="finder">
-    <div class="sechead">
-      <h2>Rhyme Finder</h2>
-      <span class="label">Perfect + slant + multis</span>
-    </div>
-    <div class="searchrow">
-      <input type="text" id="rhymeInput" placeholder="type a word or 2–3 words" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Word to rhyme">
-      <div class="minbox">
-        <label class="label" for="rhymeMin">Min rhyme rating</label>
-        <input type="range" id="rhymeMin" min="60" max="100" step="1" value="75">
-        <span class="val" id="rhymeMinVal">75+</span>
+      <div class="tpanel" id="rhymesPanel" role="tabpanel" aria-labelledby="ttRhymes">
+        <section class="finder" id="finder">
+          <div class="sechead">
+            <h2>Rhyme Finder</h2>
+            <span class="label">Perfect + slant + multis</span>
+          </div>
+          <div class="searchrow">
+            <input type="text" id="rhymeInput" placeholder="type a word or 2–3 words" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Word to rhyme">
+            <div class="minbox">
+              <label class="label" for="rhymeMin">Min rhyme rating</label>
+              <input type="range" id="rhymeMin" min="60" max="100" step="1" value="75">
+              <span class="val" id="rhymeMinVal">75+</span>
+            </div>
+          </div>
+          <div class="heard" id="heard">Loading 42,000 words…</div>
+          <div class="cols" id="rhymeCols"></div>
+          <div class="legend"><span>100 = perfect rhyme</span><span>85–99 = tight slant</span><span>75–84 = flows</span><span>multi = matches the syllable before too</span><span>filled = known saying</span></div>
+        </section>
       </div>
-    </div>
-    <div class="heard" id="heard">Loading 42,000 words…</div>
-    <div class="cols" id="rhymeCols"></div>
-    <div class="legend"><span>100 = perfect rhyme</span><span>85–99 = tight slant</span><span>75–84 = flows</span><span>multi = matches the syllable before too</span><span>filled = known saying</span></div>
-  </section>
 
-      <section class="gen" id="gen">
-        <div class="sechead">
-          <h2>Word Generator</h2>
-        </div>
-        <div class="controls">
-    <div class="label">Pools</div>
-    <div class="chips" id="chips"></div>
-    <div class="row">
-      <div>
-        <div class="label" style="margin-bottom:6px">Count</div>
-        <div class="seg" id="count"></div>
-      </div>
-      <div>
-        <div class="label" style="margin-bottom:6px">Mutate</div>
-        <div class="seg" id="mutate"></div>
-      </div>
-      <button class="reroll" id="reroll" type="button">Reroll</button>
-    </div>
-    <div class="hint">Space = reroll · Everyday words make up most of each roll · Mutate is off by default</div>
-        <div class="grid" id="grid" aria-live="polite"></div>
-      </section>
+      <div class="tpanel" id="wordsPanel" role="tabpanel" aria-labelledby="ttWords" hidden>
+        <section class="gen" id="gen">
+          <div class="sechead">
+            <h2>Word Generator</h2>
+          </div>
+          <div class="controls">
+            <div class="label">Pools</div>
+            <div class="chips" id="chips"></div>
+            <div class="row">
+              <div>
+                <div class="label" style="margin-bottom:6px">Count</div>
+                <div class="seg" id="count"></div>
+              </div>
+              <div>
+                <div class="label" style="margin-bottom:6px">Mutate</div>
+                <div class="seg" id="mutate"></div>
+              </div>
+              <button class="reroll" id="reroll" type="button">Reroll</button>
+            </div>
+            <div class="hint">Space = reroll · Everyday words make up most of each roll · Mutate is off by default</div>
+          </div>
+          <div class="grid" id="grid" aria-live="polite"></div>
+        </section>
 
-  <section>
-    <div class="sechead">
-      <h2>Stash</h2>
-      <div class="row">
-        <button class="ghost" id="copyStash" type="button">Copy all</button>
-        <button class="ghost" id="clearStash" type="button">Clear</button>
-      </div>
-    </div>
-    <div class="stash" id="stash"></div>
-  </section>
+        <section>
+          <div class="sechead">
+            <h2>Stash</h2>
+            <div class="row">
+              <button class="ghost" id="copyStash" type="button">Copy all</button>
+              <button class="ghost" id="clearStash" type="button">Clear</button>
+            </div>
+          </div>
+          <div class="stash" id="stash"></div>
+        </section>
 
-  <section>
-    <div class="sechead">
-      <h2>Your own words</h2>
-      <button class="ghost" id="saveCustom" type="button">Add to mix</button>
-    </div>
-    <p class="empty">Drop in your own words, comma or line separated. They join the "Yours" pool and get blended into coined words too.</p>
-    <textarea id="custom" placeholder="e.g. Rimowa, Ballarat, bando, Celica, Jacquemus"></textarea>
-  </section>
+        <section>
+          <div class="sechead">
+            <h2>Your own words</h2>
+            <button class="ghost" id="saveCustom" type="button">Add to mix</button>
+          </div>
+          <p class="empty">Drop in your own words, comma or line separated. They join the "Yours" pool and get blended into coined words too.</p>
+          <textarea id="custom" placeholder="e.g. Rimowa, Ballarat, bando, Celica, Jacquemus"></textarea>
+        </section>
+      </div>
     </aside>
   </div>
 </div>

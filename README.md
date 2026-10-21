@@ -32,7 +32,7 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Underground: blackletter chrome logo, blood red, grain, scanlines, glitch hovers
 - Motion: smooth scrolling on desktop, click ripples, staggered results, scroll reveals, and a play button and logo that pulse with the beat
 
-**Word generator**
+**Word generator** (its own tab next to Rhymes)
 - Mostly calm everyday words, mixed with slang, labels, cars and places
 - Pin and stash words, add your own
 

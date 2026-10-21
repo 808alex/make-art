@@ -188,6 +188,7 @@ document.addEventListener("click", e => {
   } else if (d.rhyme !== undefined) {
     const inp = document.getElementById("rhymeInput");
     inp.value = state.cards[+d.rhyme].w; runRhyme();
+    showTool("rhymes");
     document.getElementById("finder").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   } else if (d.rcopy !== undefined) {
     useWord(d.rcopy);

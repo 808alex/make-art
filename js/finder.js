@@ -91,7 +91,7 @@ document.getElementById("rhymeMin").addEventListener("input", e => {
 })();
 document.addEventListener("keydown", e => {
   const ae = document.activeElement;
-  if (e.code === "Space" && (!ae || ae === document.body)) { e.preventDefault(); reroll(); }
+  if (e.code === "Space" && (!ae || ae === document.body) && !document.getElementById("wordsPanel").hidden) { e.preventDefault(); reroll(); }
 });
 
 document.getElementById("custom").value = state.custom;
@@ -99,3 +99,30 @@ parseCustom();
 renderControls();
 renderStash();
 reroll();
+
+// ---- Rhymes / Words tabs in the tools column ----
+function showTool(name, opts) {
+  const words = name === "words";
+  const rp = document.getElementById("rhymesPanel"), wp = document.getElementById("wordsPanel");
+  const was = rp.hidden ? "words" : "rhymes";
+  rp.hidden = words; wp.hidden = !words;
+  document.getElementById("ttRhymes").setAttribute("aria-selected", String(!words));
+  document.getElementById("ttWords").setAttribute("aria-selected", String(words));
+  try { localStorage.setItem("ma.tool", words ? "words" : "rhymes"); } catch (e) {}
+  if (was !== name && !(opts && opts.instant)) {
+    const el = words ? wp : rp;
+    el.style.setProperty("--from", words ? "18px" : "-18px");
+    el.classList.remove("enter"); void el.offsetWidth; el.classList.add("enter");
+    document.getElementById("tools").scrollTop = 0;
+  }
+  if (window.placeTabLines) window.placeTabLines();
+}
+document.querySelector(".ttabs").addEventListener("click", e => {
+  const b = e.target.closest("button[data-tool]");
+  if (b) showTool(b.dataset.tool);
+});
+(function () {
+  let t = "rhymes";
+  try { t = localStorage.getItem("ma.tool") || "rhymes"; } catch (e) {}
+  showTool(t === "words" ? "words" : "rhymes", { instant: true });
+})();
