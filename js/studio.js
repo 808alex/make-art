@@ -414,6 +414,7 @@ function rhymeFromLyrics(n) {
   if (!q) { toast("Write a line first"); return; }
   $("rhymeInput").value = q;
   runRhyme();
+  showTool("rhymes");
   $("finder").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
 }
 function markTime() {

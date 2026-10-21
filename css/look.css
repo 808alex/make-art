@@ -53,7 +53,7 @@ button, .rw, .chip, .tool, .ghost, .pchip, .pbtn, .fact, .beatbtn, .tbtn, .icon,
 @keyframes chipIn { from { opacity: 0; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: none; } }
 .rlist .rw.in { animation: chipIn .4s var(--ease) both; animation-delay: calc(var(--i, 0) * 14ms); }
 @keyframes viewIn { from { opacity: 0; transform: translateX(var(--from, 12px)); } to { opacity: 1; transform: none; } }
-.view.enter { animation: viewIn .4s var(--ease) both; }
+.view.enter, .tpanel.enter { animation: viewIn .4s var(--ease) both; }
 .track.in { animation: chipIn .35s var(--ease) both; animation-delay: calc(var(--i, 0) * 40ms); }
 
 /* tabs: sliding underline */

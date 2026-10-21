@@ -237,6 +237,10 @@ textarea.lyrics { min-height: 52vh; }
 .edfoot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font: 500 12px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
 .keys { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 500 11.5px var(--mono); color: var(--muted); }
 kbd { font: 700 10.5px var(--mono); padding: 2px 5px; border-radius: 4px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 18px; }
+.ttabs { flex: 0 0 auto; }
+.ttabs button { font-size: 13px; padding: 11px 18px; }
+.tpanel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; min-width: 0; }
 .tapmode { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .gen { display: grid; gap: 14px; }
 .tools .reroll { font-size: 14px; padding: 12px 18px; }
