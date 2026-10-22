@@ -48,10 +48,6 @@
     sp.style.setProperty("--ry", e.clientY - r.top + "px");
     el.appendChild(sp);
     sp.addEventListener("animationend", () => sp.remove());
-    if (root.dataset.skin === "ug") {
-      el.classList.remove("zap"); void el.offsetWidth; el.classList.add("zap");
-      setTimeout(() => el.classList.remove("zap"), 280);
-    }
   }, { passive: true });
 
   // ---------- scroll reveal (only for what starts below the fold) ----------

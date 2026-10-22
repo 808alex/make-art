@@ -28,8 +28,8 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Results grouped into Everyday, Brands & buzz, Archive pieces and Rare & distinct
 
 **Looks**
-- Mono: soft greys and charcoal, follows your light/dark setting
-- Underground: blackletter chrome logo, blood red, grain, scanlines, glitch hovers
+- Mono: soft greys and charcoal, clean grotesk type (Instrument Sans), follows your light/dark setting
+- Underground: ink black, warm off-white, one muted oxblood accent, serif italics (Instrument Serif) with Geist, film grain
 - Motion: smooth scrolling on desktop, click ripples, staggered results, scroll reveals, and a play button and logo that pulse with the beat
 
 **Word generator** (its own tab next to Rhymes)
@@ -86,4 +86,4 @@ python3 tools/enc.py          # compresses it to rhymes.dat, then copy to data/r
 - Pronunciations: CMU Pronouncing Dictionary (BSD-style licence)
 - Word ranking: frequencies from the `wordfreq` package. Its data is CC BY-SA 4.0, so before a public launch either credit it properly or re-rank the words from a source with a looser licence.
 - MP4 audio muxing: `mp4-muxer` (MIT), loaded from jsDelivr
-- Fonts: Rubik Mono One, Manrope and JetBrains Mono, all from Google Fonts (OFL)
+- Fonts: Instrument Sans, Instrument Serif, Geist and Geist Mono, all from Google Fonts (OFL)
