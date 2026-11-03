@@ -89,9 +89,9 @@ Then open http://localhost:8000. Locally, songs save in your browser only.
 
 ## The website (GitHub Pages)
 
-`tools/build_site.py` builds `_site/`: the landing page from `site/` at the root and the app at `/app/` (it wraps `index.html` in a full HTML document and copies `css/`, `js/` and `data/`). The workflow in `.github/workflows/pages.yml` runs it on every push to `main` and deploys to GitHub Pages.
+`tools/build_site.py` builds `_site/`: the landing page from `site/` at the root and the app at `/app/` (it wraps `index.html` in a full HTML document and copies `css/`, `js/` and `data/`). `tools/publish_pages.sh` builds it and pushes the result to the `gh-pages` branch, which GitHub Pages serves.
 
-To turn it on once: repo **Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the "Deploy site" workflow from the Actions tab.
+To turn it on once: repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `gh-pages` / `(root)` → Save**. After that, run `tools/publish_pages.sh` whenever you want the website updated.
 
 ## Saving and sync
 
