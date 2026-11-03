@@ -3,7 +3,7 @@
 /* ---------- theme swatches in the header ---------- */
 .headright { display: grid; gap: 12px; justify-items: end; }
 @media (max-width: 720px) { .headright { justify-items: start; } }
-.pal { display: inline-flex; align-items: center; gap: 8px; }
+.pal { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .pal .label { margin-right: 4px; }
 .pal button {
   width: 30px; height: 30px; border-radius: 50%; cursor: pointer; padding: 0;
@@ -94,6 +94,52 @@ html.lenis, html.lenis body { height: auto; }
 @keyframes menuIn { from { opacity: 0; transform: translateY(-4px) scale(.97); } to { opacity: 1; transform: none; } }
 .menu:not([hidden]) { animation: menuIn .22s var(--spring) both; transform-origin: top left; }
 .beatbox[open] .bb-body { animation: chipIn .3s var(--ease) both; }
+
+/* ---------- first-run tour: a tall card in the middle of the screen ---------- */
+.helpbtn {
+  margin-left: 6px; white-space: nowrap; font: 700 11px/1 var(--mono); letter-spacing: .04em; padding: 9px 12px; border-radius: var(--rad-pill);
+  border: var(--bw) solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer;
+}
+.pal .helpbtn { width: auto; height: auto; padding: 9px 12px; border-radius: var(--rad-pill); background: var(--panel); box-shadow: none; transform: none; }
+.helpbtn:hover, .pal .helpbtn:hover { border-color: var(--ink); transform: translateY(-1px); }
+.tour {
+  position: fixed; inset: 0; z-index: 95; display: grid; place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
+  animation: dzFade .25s var(--ease) both;
+}
+.tour.leaving { animation: tourOut .25s var(--ease) both; }
+@keyframes tourOut { to { opacity: 0; } }
+.tour-card {
+  width: min(400px, 100%); min-height: min(560px, calc(100vh - 32px)); max-height: calc(100vh - 32px); overflow-y: auto;
+  display: grid; grid-template-rows: auto 1fr auto auto; gap: 18px; padding: 22px;
+  background: var(--panel); color: var(--ink); border: var(--bw) solid var(--line); border-radius: 22px;
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .55);
+  animation: tourPop .5s var(--spring) both;
+}
+@keyframes tourPop { from { opacity: 0; transform: translateY(14px) scale(.94); } to { opacity: 1; transform: none; } }
+.tour-card.warn .tour-art { background: var(--accent); color: var(--accent-ink); }
+.tour-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.tour-count { font: 700 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.tour-skipbtn { font: 700 12px/1 var(--mono); padding: 8px 10px; border-radius: var(--rad); border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.tour-skipbtn:hover { color: var(--ink); background: var(--bg); }
+.tour-page { display: grid; gap: 14px; align-content: start; }
+.tour-page.enter { animation: viewIn .4s var(--ease) both; }
+.tour-art {
+  width: 84px; height: 84px; border-radius: 22px; display: grid; place-items: center; transform: rotate(-4deg);
+  background: var(--sticker); color: var(--sticker-ink); margin: 8px 0 6px;
+}
+.tour-art svg { width: 40px; height: 40px; }
+.tour-page h2 { font-size: 1.35rem; line-height: 1.15; }
+.tour-body { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ink); }
+.tour-list { margin: 0; padding-left: 1.15em; display: grid; gap: 8px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+.tour-dots { display: flex; gap: 6px; justify-content: center; }
+.tour-dots span { width: 7px; height: 7px; border-radius: 99px; background: var(--line); transition: width .35s var(--spring), background-color .2s; }
+.tour-dots span.on { width: 22px; background: var(--accent); }
+.tour-nav { display: flex; gap: 10px; }
+.tour-nav [data-next] { flex: 1; margin: 0; font-size: 15px; }
+.tour-nav [hidden] + [data-next] { flex: 1; }
 
 /* ---------- drop a beat anywhere ---------- */
 .dropzone {

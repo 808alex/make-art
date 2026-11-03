@@ -1,5 +1,11 @@
 // ---- Backup: move songs, EPs and the vault between browsers with a file (no account, no server) ----
 // Beats aren't included: they're big audio files and stay in the browser they were loaded in.
+
+// in browser-only mode, ask the browser to keep this site's storage instead of clearing it when space runs low
+(function keepStorage() {
+  const ask = () => { if (studio.mode === "local" && navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); };
+  if (studio.mode === "pending") setTimeout(keepStorage, 1500); else ask();
+})();
 function backupData() {
   const clean = o => { const c = {}; for (const k in o) if (!k.startsWith("_")) c[k] = o[k]; return c; };
   return {

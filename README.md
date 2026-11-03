@@ -45,6 +45,9 @@ No account and nothing to install. Everything you write is saved in the browser 
 - Phrase mode: type 2–3 words and get phrases that match the whole flow
 - Results grouped into Everyday, Brands & buzz, Archive pieces and Rare & distinct
 
+**First-run tour**
+- A short walkthrough of the app the first time it opens (skippable, reopen with How it works), including where your work is saved
+
 **Looks**
 - Five colour themes, each a pair: Classic (cobalt + marigold), Grape (violet + lime), Moss (green + pink), Lagoon (teal + coral), Cherry (red + sky blue)
 - Every theme works in light and dark, following your device setting
@@ -115,10 +118,16 @@ python3 tools/build_dict.py   # writes rhymes.txt
 python3 tools/enc.py          # compresses it to rhymes.dat, then copy to data/rhymes.txt
 ```
 
-## Credits and licences to sort before launch
+## Licence
+
+The code is MIT licensed (see `LICENSE`): anyone can use, change and share it, as long as they keep the copyright notice crediting Alexander Zudins (808alex).
+
+The word list in `data/rhymes.txt` is the one exception: it's shared under CC BY-SA 4.0 because its word ranking comes from wordfreq (see `data/NOTICE.md`).
+
+## Credits
 
 - Pronunciations: CMU Pronouncing Dictionary (BSD-style licence)
-- Word ranking: frequencies from the `wordfreq` package. Its data is CC BY-SA 4.0, so before a public launch either credit it properly or re-rank the words from a source with a looser licence.
+- Word ranking: word frequencies from [wordfreq](https://github.com/rspeer/wordfreq) by Robyn Speer (data CC BY-SA 4.0)
 - MP4 audio muxing: `mp4-muxer` (MIT), loaded from jsDelivr
+- Smooth scrolling: `lenis` (MIT), loaded from jsDelivr
 - Fonts: Rubik Mono One, Manrope and JetBrains Mono, all from Google Fonts (OFL)
-- Because the word ranking in `data/rhymes.txt` comes from wordfreq, that file is shared under CC BY-SA 4.0 (see `data/NOTICE.md`).

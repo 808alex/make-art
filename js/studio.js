@@ -537,7 +537,7 @@ document.addEventListener("keydown", e => {
   const isRange = tag === "INPUT" && t.type === "range";
   const typing = t && (t.isContentEditable || tag === "TEXTAREA" || tag === "SELECT" ||
     (tag === "INPUT" && !/^(button|range|submit|reset)$/i.test(t.type)));
-  if (typing) return;
+  if (typing || (t.closest && t.closest(".tour"))) return;
   if (e.code === "Space" || e.key === " ") { e.preventDefault(); togglePlay(); }
   else if (!isRange && e.key === "ArrowLeft") { e.preventDefault(); skip(-5); }
   else if (!isRange && e.key === "ArrowRight") { e.preventDefault(); skip(5); }
