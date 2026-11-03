@@ -91,6 +91,19 @@ h2 { margin: 0 0 18px; font: 400 clamp(1.3rem, 3vw, 1.8rem)/1.1 var(--display); 
 .private p { margin: 0; max-width: 62ch; opacity: .85; }
 .private ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; max-width: 62ch; }
 
+.totop {
+  position: fixed; z-index: 20; right: max(18px, env(safe-area-inset-right, 0px)); bottom: max(18px, env(safe-area-inset-bottom, 0px));
+  font: 700 13px/1 var(--mono); padding: 13px 18px; border-radius: 999px; border: 0; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); box-shadow: 0 14px 30px -12px rgba(10, 14, 40, .5);
+  opacity: 0; transform: translateY(16px) scale(.9); pointer-events: none;
+  transition: opacity .3s var(--ease), transform .45s var(--spring);
+}
+.totop.show { opacity: 1; transform: none; pointer-events: auto; }
+.totop:hover { transform: translateY(-2px); }
+.totop:focus-visible { outline: 3px solid var(--s); outline-offset: 3px; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); } 50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent) 0%, transparent); } }
+.btn.go.pulse { animation: pulse .9s var(--ease) 2; }
+
 footer { display: grid; gap: 10px; font: 500 13px/1.6 var(--mono); color: var(--muted); border-top: 1.5px solid var(--line); padding-top: 22px; }
 footer p { margin: 0; }
 
@@ -124,7 +137,7 @@ footer p { margin: 0; }
   </header>
 
   <figure class="shot reveal">
-    <img src="shot.png" width="1600" height="1000" alt="The Make Art studio: a song being written over a beat on the left with rhyming words highlighted in matching colours, and the rhyme finder on the right listing rhymes for the word drip.">
+    <img src="shot.png" width="1600" height="1000" alt="The Make Art studio: a song being written over a playing beat on the left with rhyming words highlighted in matching colours, and on the right saved bars from the vault plus the rhyme finder listing rhymes for the word glow.">
     <figcaption>Lyrics on the left with rhyme colours and syllable counts, rhymes on the right, the beat along the bottom.</figcaption>
   </figure>
 
@@ -158,7 +171,20 @@ footer p { margin: 0; }
     <p>Pronunciations from the CMU Pronouncing Dictionary. Word frequencies from <a href="https://github.com/rspeer/wordfreq">wordfreq</a> by Robyn Speer, CC BY-SA 4.0.</p>
   </footer>
 </div>
+<button class="totop" id="toTop" type="button" aria-label="Back to the top of the page">↑ Back to top</button>
 <script>
+  // a small pill that appears once you've scrolled past the "Open the app" button and takes you back to it
+  (function () {
+    const btn = document.getElementById("toTop"), cta = document.querySelector(".cta .go");
+    const update = () => btn.classList.toggle("show", cta.getBoundingClientRect().bottom < 0);
+    addEventListener("scroll", update, { passive: true });
+    update();
+    btn.addEventListener("click", () => {
+      const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+      scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+      setTimeout(() => { cta.focus({ preventScroll: true }); cta.classList.remove("pulse"); void cta.offsetWidth; cta.classList.add("pulse"); }, smooth ? 600 : 0);
+    });
+  })();
   // ease sections in as they scroll into view (they're already visible without this)
   if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.remove("pre"); io.unobserve(e.target); } }), { threshold: .12 });

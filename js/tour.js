@@ -52,6 +52,8 @@
     try { localStorage.setItem(KEY, "1"); } catch (e) {}
     if (!el) return;
     el.classList.add("leaving");
+    document.documentElement.classList.remove("tour-open");
+    if (window.__lenis) window.__lenis.start();
     const gone = el; el = null;
     setTimeout(() => gone.remove(), 260);
     if (lastFocus && lastFocus.focus) lastFocus.focus();
@@ -61,6 +63,9 @@
     list = steps(); i = 0; lastFocus = document.activeElement;
     el = document.createElement("div");
     el.className = "tour";
+    el.setAttribute("data-lenis-prevent", "");   // the smooth-scroll library must not take the wheel from the card
+    document.documentElement.classList.add("tour-open");
+    if (window.__lenis) window.__lenis.stop();
     el.innerHTML = `
       <div class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
         <div class="tour-top"><span class="tour-count"></span><button type="button" class="tour-skipbtn" data-skip>Skip tour</button></div>

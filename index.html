@@ -11,6 +11,7 @@
     try { p = localStorage.getItem("ma.pal") || "classic"; } catch (e) {}
     if (["classic", "grape", "moss", "lagoon", "cherry"].indexOf(p) < 0) p = "classic";
     document.documentElement.dataset.pal = p;
+    try { var z = parseFloat(localStorage.getItem("ma.zoom")); if (z >= 0.6 && z <= 1.6 && z !== 1) document.documentElement.style.zoom = z; } catch (e) {}
     document.documentElement.classList.add("boot");
   })();
 </script>
@@ -34,6 +35,11 @@
         <button type="button" data-pal="moss" aria-pressed="false" aria-label="Moss: green and pink" title="Moss" style="--sa:#1d7a4e;--ss:#ffa3be"></button>
         <button type="button" data-pal="lagoon" aria-pressed="false" aria-label="Lagoon: teal and coral" title="Lagoon" style="--sa:#0b7f7b;--ss:#ff7a5a"></button>
         <button type="button" data-pal="cherry" aria-pressed="false" aria-label="Cherry: red and sky blue" title="Cherry" style="--sa:#cf2338;--ss:#9fd8ff"></button>
+        <div class="zoomctl" role="group" aria-label="Zoom">
+          <button type="button" id="zoomOut" aria-label="Zoom out">−</button>
+          <button type="button" id="zoomReset" title="Back to 100%">100%</button>
+          <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+        </div>
         <button type="button" class="helpbtn" id="tourBtn" title="Show the tour again">How it works</button>
       </div>
       <p class="sub">Write over your beat with the rhyme finder, your bar vault and the word generator right beside you.</p>

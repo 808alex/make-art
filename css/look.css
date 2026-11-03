@@ -95,6 +95,17 @@ html.lenis, html.lenis body { height: auto; }
 .menu:not([hidden]) { animation: menuIn .22s var(--spring) both; transform-origin: top left; }
 .beatbox[open] .bb-body { animation: chipIn .3s var(--ease) both; }
 
+/* ---------- zoom control in the header ---------- */
+.zoomctl { display: inline-flex; align-items: center; margin-left: 6px; border: var(--bw) solid var(--line); border-radius: var(--rad-pill); background: var(--panel); overflow: hidden; }
+.pal .zoomctl button {
+  width: auto; height: auto; border: 0; border-radius: 0; background: transparent; box-shadow: none; transform: none;
+  font: 700 12px/1 var(--mono); color: var(--ink); padding: 8px 10px; cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.pal .zoomctl button:hover:not(:disabled) { background: var(--bg); transform: none; }
+.pal .zoomctl button:disabled { opacity: .35; cursor: default; }
+.pal .zoomctl #zoomReset { min-width: 5.2ch; padding: 8px 4px; border-inline: var(--bw) solid var(--line); }
+.pal .zoomctl #zoomOut, .pal .zoomctl #zoomIn { font-size: 15px; padding: 6px 11px; }
+
 /* ---------- first-run tour: a tall card in the middle of the screen ---------- */
 .helpbtn {
   margin-left: 6px; white-space: nowrap; font: 700 11px/1 var(--mono); letter-spacing: .04em; padding: 9px 12px; border-radius: var(--rad-pill);
@@ -110,6 +121,9 @@ html.lenis, html.lenis body { height: auto; }
   animation: dzFade .25s var(--ease) both;
 }
 .tour.leaving { animation: tourOut .25s var(--ease) both; }
+html.tour-open, html.tour-open body { overflow: hidden; }
+.tour { overscroll-behavior: contain; }
+.tour-card { overscroll-behavior: contain; }
 @keyframes tourOut { to { opacity: 0; } }
 .tour-card {
   width: min(400px, 100%); min-height: min(560px, calc(100vh - 32px)); max-height: calc(100vh - 32px); overflow-y: auto;

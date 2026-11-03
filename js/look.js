@@ -36,6 +36,30 @@
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !optMenu.hidden) { setMenu(false); optBtn.focus(); } });
   optMenu.addEventListener("click", e => { if (e.target.closest("button.mi")) setMenu(false); });
 
+  // ---------- zoom the whole app in or out ----------
+  const ZOOMS = [0.7, 0.8, 0.9, 1, 1.1, 1.25, 1.4, 1.5];
+  let zoom = parseFloat(root.style.zoom) || 1;
+  function setZoom(z) {
+    zoom = z;
+    root.style.zoom = z === 1 ? "" : String(z);
+    $("zoomReset").textContent = Math.round(z * 100) + "%";
+    $("zoomOut").disabled = z <= ZOOMS[0];
+    $("zoomIn").disabled = z >= ZOOMS[ZOOMS.length - 1];
+    try { localStorage.setItem("ma.zoom", String(z)); } catch (e) {}
+    if (typeof autoGrow === "function") autoGrow();
+    if (window.placeTabLines) window.placeTabLines();
+    window.dispatchEvent(new Event("resize"));
+  }
+  const step = d => {
+    const i = ZOOMS.findIndex(v => Math.abs(v - zoom) < 0.001);
+    const at = i < 0 ? ZOOMS.indexOf(1) : i;
+    setZoom(ZOOMS[Math.min(ZOOMS.length - 1, Math.max(0, at + d))]);
+  };
+  $("zoomOut").addEventListener("click", () => step(-1));
+  $("zoomIn").addEventListener("click", () => step(1));
+  $("zoomReset").addEventListener("click", () => setZoom(1));
+  setZoom(ZOOMS.reduce((a, b) => Math.abs(b - zoom) < Math.abs(a - zoom) ? b : a, 1));
+
   // first-paint animation only runs once
   setTimeout(() => root.classList.remove("boot"), 1300);
 
