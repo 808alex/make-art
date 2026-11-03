@@ -89,10 +89,6 @@ document.getElementById("rhymeMin").addEventListener("input", e => {
     document.getElementById("heard").textContent = "The rhyme dictionary didn't load. Refresh the page to try again.";
   });
 })();
-document.addEventListener("keydown", e => {
-  const ae = document.activeElement;
-  if (e.code === "Space" && (!ae || ae === document.body) && !document.getElementById("wordsPanel").hidden) { e.preventDefault(); reroll(); }
-});
 
 document.getElementById("custom").value = state.custom;
 parseCustom();

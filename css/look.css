@@ -90,6 +90,11 @@ html.lenis, html.lenis body { height: auto; }
 ::view-transition-new(root) { animation: reveal .75s var(--ease) both; }
 @keyframes reveal { from { clip-path: circle(0 at var(--vx, 50%) var(--vy, 0%)); } to { clip-path: circle(var(--vr, 150vmax) at var(--vx, 50%) var(--vy, 0%)); } }
 
+/* dropdowns open with a little motion */
+@keyframes menuIn { from { opacity: 0; transform: translateY(-4px) scale(.97); } to { opacity: 1; transform: none; } }
+.menu:not([hidden]) { animation: menuIn .22s var(--spring) both; transform-origin: top left; }
+.beatbox[open] .bb-body { animation: chipIn .3s var(--ease) both; }
+
 /* ---------- drop a beat anywhere ---------- */
 .dropzone {
   position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; pointer-events: none;

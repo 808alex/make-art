@@ -47,7 +47,7 @@
       </div>
       <div class="stabs" role="tablist" aria-label="Studio views">
         <button type="button" role="tab" id="tabWrite" data-view="write" aria-selected="true">Write</button>
-        <button type="button" role="tab" id="tabTapes" data-view="tapes" aria-selected="false">Tapes</button>
+        <button type="button" role="tab" id="tabTapes" data-view="tapes" aria-selected="false">EP / Album</button>
         <button type="button" role="tab" id="tabVault" data-view="vault" aria-selected="false">Vault</button>
       </div>
 
@@ -61,70 +61,90 @@
 
       <input type="text" id="songTitle" class="songtitle" placeholder="Untitled" autocomplete="off" aria-label="Song title">
 
-      <div class="beatrow">
-        <label class="beatbtn" for="beatFile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-          <span id="beatBtnText">Load beat</span>
-        </label>
-        <input type="file" id="beatFile" accept="audio/*,video/mp4,video/webm,.mp3,.wav,.m4a,.aac,.ogg,.flac,.webm" hidden>
-        <div class="beatinfo">
-          <span class="beatname" id="beatName">No beat yet</span>
-          <span class="beatstate" id="beatState"></span>
-        </div>
-      </div>
-      <div class="beatfacts" id="beatFacts" hidden>
-        <button type="button" class="fact" id="bpmFact" title="Tempo">— BPM</button>
-        <button type="button" class="fact" id="keyFact" title="Key">Key —</button>
-        <button class="tool" type="button" id="tapBtn" title="Tap along to the beat to set the BPM yourself">Tap tempo</button>
-        <span class="factnote" id="factNote"></span>
-      </div>
-
-      <details class="credits" id="credits" hidden>
+      <details class="beatbox" id="beatBox">
         <summary>
-          <span class="label">Beat credits</span>
-          <span class="credsum" id="creditSum">Add the producer and licence</span>
+          <span class="bb-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+          <span class="bb-title" id="bbTitle">Add a beat</span>
+          <span class="bb-facts" id="bbFacts"></span>
           <span class="credflag" id="creditFlag" hidden></span>
+          <span class="bb-chev" aria-hidden="true"></span>
         </summary>
-        <div class="creditgrid">
-          <label class="field"><span class="label">Producer</span>
-            <input type="text" id="crProd" list="prodList" placeholder="Who made the beat" autocomplete="off"></label>
-          <label class="field"><span class="label">Licence</span>
-            <select id="crLic">
-              <option value="">Not set</option>
-              <option value="own">My own beat</option>
-              <option value="free-p">Free for profit (credit the producer)</option>
-              <option value="free-np">Free for non-profit only</option>
-              <option value="lease-mp3">Lease: MP3</option>
-              <option value="lease-wav">Lease: WAV</option>
-              <option value="lease-stems">Lease: trackouts / stems</option>
-              <option value="unlimited">Unlimited lease</option>
-              <option value="exclusive">Exclusive rights</option>
-              <option value="unknown">Not sure yet</option>
-            </select></label>
-          <label class="field wide"><span class="label">Link</span>
-            <input type="url" id="crLink" placeholder="BeatStars, YouTube, Drive, the producer's page…" autocomplete="off"></label>
-          <label class="field wide"><span class="label">Notes</span>
-            <textarea id="crNotes" rows="2" placeholder="Order number, stream or sales limits, where the contract is, how to credit…"></textarea></label>
-          <a class="credlink" id="crOpen" href="#" target="_blank" rel="noopener noreferrer" hidden>Open the beat's page ↗</a>
+        <div class="bb-body">
+          <div class="bb-side">
+            <span class="label">Beat</span>
+            <div class="beatrow">
+              <label class="beatbtn" for="beatFile">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                <span id="beatBtnText">Load beat</span>
+              </label>
+              <input type="file" id="beatFile" accept="audio/*,video/mp4,video/webm,.mp3,.wav,.m4a,.aac,.ogg,.flac,.webm" hidden>
+              <div class="beatinfo">
+                <span class="beatname" id="beatName">No beat yet</span>
+                <span class="beatstate" id="beatState"></span>
+              </div>
+            </div>
+            <div class="beatfacts" id="beatFacts" hidden>
+              <button type="button" class="fact" id="bpmFact" title="Tempo">— BPM</button>
+              <button type="button" class="fact" id="keyFact" title="Key">Key —</button>
+              <button class="tool" type="button" id="tapBtn" title="Tap along to the beat to set the BPM yourself">Tap tempo</button>
+              <span class="factnote" id="factNote"></span>
+            </div>
+          </div>
+          <div class="bb-side" id="credits">
+            <span class="label">Credits</span>
+            <div class="creditgrid">
+              <label class="field"><span class="label">Producer</span>
+                <input type="text" id="crProd" list="prodList" placeholder="Who made the beat" autocomplete="off"></label>
+              <label class="field"><span class="label">Licence</span>
+                <select id="crLic">
+                  <option value="">Not set</option>
+                  <option value="own">My own beat</option>
+                  <option value="free-p">Free for profit (credit the producer)</option>
+                  <option value="free-np">Free for non-profit only</option>
+                  <option value="lease-mp3">Lease: MP3</option>
+                  <option value="lease-wav">Lease: WAV</option>
+                  <option value="lease-stems">Lease: trackouts / stems</option>
+                  <option value="unlimited">Unlimited lease</option>
+                  <option value="exclusive">Exclusive rights</option>
+                  <option value="unknown">Not sure yet</option>
+                </select></label>
+              <label class="field wide"><span class="label">Link</span>
+                <input type="url" id="crLink" placeholder="BeatStars, YouTube, Drive, the producer's page…" autocomplete="off"></label>
+              <label class="field wide"><span class="label">Notes</span>
+                <textarea id="crNotes" rows="2" placeholder="Order number, stream or sales limits, where the contract is, how to credit…"></textarea></label>
+              <a class="credlink" id="crOpen" href="#" target="_blank" rel="noopener noreferrer" hidden>Open the beat's page ↗</a>
+            </div>
+            <p class="empty" id="creditEmpty">Load a beat to add who made it and what licence you have.</p>
+            <datalist id="prodList"></datalist>
+          </div>
         </div>
-        <datalist id="prodList"></datalist>
       </details>
 
       <div class="edtools" role="toolbar" aria-label="Writing tools">
-        <button class="tool" type="button" id="rhymeLast" title="Alt+R">Rhyme last word</button>
-        <button class="tool" type="button" id="rhymeLast2" title="Alt+Shift+R">Rhyme last 2</button>
-        <button class="tool" type="button" id="markTime" title="Alt+T">Mark beat time</button>
-        <button class="tool" type="button" id="jumpTime" title="Alt+J">Jump to line's time</button>
-        <button class="tool" type="button" id="loopPart" title="Loops from this line's marked time to the next mark">Loop this part</button>
-        <button class="tool" type="button" id="toVault" title="Saves the selected lines, or the line you're on, to your bar vault">Save to vault</button>
-        <button class="tool toggle" type="button" id="hlToggle" aria-pressed="true">Rhyme colours</button>
-        <button class="tool toggle" type="button" id="sylToggle" aria-pressed="true">Syllables</button>
-        <button class="tool toggle" type="button" id="owToggle" aria-pressed="true" title="Underlines words you've used a lot across all your songs">Overused</button>
+        <button class="tool" type="button" id="markTime" title="Stamps the beat's current time at the start of this line">Mark beat time</button>
+        <div class="menuwrap">
+          <button class="tool" type="button" id="optBtn" aria-haspopup="true" aria-expanded="false" aria-controls="optMenu">Options <span class="caret" aria-hidden="true">▾</span></button>
+          <div class="menu" id="optMenu" hidden>
+            <div class="menu-sec">
+              <span class="label">Show</span>
+              <label class="mi"><input type="checkbox" id="optHl"> Rhyme colours</label>
+              <label class="mi"><input type="checkbox" id="optSyl"> Syllable counts</label>
+              <label class="mi"><input type="checkbox" id="optOw"> Overused words</label>
+              <label class="mi"><input type="checkbox" id="optVs"> Vault suggestions</label>
+            </div>
+            <div class="menu-sec">
+              <span class="label">This line</span>
+              <button class="mi" type="button" id="jumpTime">Jump to its marked time</button>
+              <button class="mi" type="button" id="loopPart">Loop from its mark to the next</button>
+              <button class="mi" type="button" id="toVault">Save it to the vault</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="edwrap" id="edwrap">
         <div class="hl" id="hl" aria-hidden="true"></div>
-        <textarea id="lyrics" class="lyrics" spellcheck="false" placeholder="Start writing. Load a beat, press Esc to play or pause, and mark times so you can jump back to a verse."></textarea>
+        <textarea id="lyrics" class="lyrics" spellcheck="false" placeholder="Start writing. Space plays and pauses the beat when you're not typing, and ← → skip back and forward."></textarea>
       </div>
 
       <div class="vsuggest" id="vSuggest" hidden>
@@ -144,25 +164,17 @@
         <span class="label">Used a lot</span>
         <div class="habitchips" id="habitChips"></div>
       </div>
-      <div class="keys">
-        <span><kbd>Esc</kbd> play / pause</span>
-        <span><kbd>Alt</kbd>+<kbd>←</kbd><kbd>→</kbd> 5s back / forward</span>
-        <span><kbd>Alt</kbd>+<kbd>R</kbd> rhyme last word (or selection)</span>
-        <span><kbd>Alt</kbd>+<kbd>T</kbd> mark time</span>
-        <span><kbd>[</kbd> <kbd>]</kbd> set loop A / B while playing</span>
-        <span><kbd>Alt</kbd>+<kbd>V</kbd> bar vault</span>
-      </div>
       </div>
 
       <div class="view" id="tapesView" hidden>
         <div class="songbar">
-          <label class="visually-hidden" for="tapeSelect">Tape</label>
+          <label class="visually-hidden" for="tapeSelect">EP or album</label>
           <select id="tapeSelect"></select>
-          <button class="ghost" type="button" id="newTape">New tape</button>
+          <button class="ghost" type="button" id="newTape">New EP / album</button>
           <button class="ghost danger" type="button" id="deleteTape">Delete</button>
         </div>
         <div id="tapeBody">
-          <input type="text" id="tapeName" class="songtitle" placeholder="Name your tape" autocomplete="off" aria-label="Tape name">
+          <input type="text" id="tapeName" class="songtitle" placeholder="Name your EP or album" autocomplete="off" aria-label="EP or album name">
           <div class="nameideas">
             <button class="tool" type="button" id="nameIdeas">Name ideas</button>
             <div class="ideachips" id="ideaChips"></div>
@@ -171,14 +183,14 @@
           <div class="addtrack">
             <label class="visually-hidden" for="addSongSel">Song to add</label>
             <select id="addSongSel"></select>
-            <button class="ghost" type="button" id="addTrack">Add to tape</button>
+            <button class="ghost" type="button" id="addTrack">Add song</button>
           </div>
           <div class="edfoot">
             <span id="tapeStats"></span>
             <button class="ghost" type="button" id="copyTracklist">Copy tracklist</button>
           </div>
         </div>
-        <p class="empty" id="tapeEmpty" hidden>Group your songs into a tape or EP and put them in order. Start one with New tape.</p>
+        <p class="empty" id="tapeEmpty" hidden>Group your songs into an EP or album and put them in order. Start one with New EP / album.</p>
       </div>
 
       <div class="view" id="vaultView" hidden>
@@ -187,7 +199,6 @@
           <textarea id="vaultInput" class="vaultinput" rows="2" placeholder="Got a bar? Drop it here before it's gone."></textarea>
           <div class="row">
             <button class="reroll" type="button" id="vaultSave">Save bar</button>
-            <span class="hint">Ctrl+Enter saves · Alt+V opens the vault from anywhere</span>
           </div>
         </div>
         <div class="vaulttools">
@@ -232,7 +243,6 @@
           </div>
           <div class="heard" id="heard">Loading 42,000 words…</div>
           <div class="cols" id="rhymeCols"></div>
-          <div class="legend"><span>100 = perfect rhyme</span><span>85–99 = tight slant</span><span>75–84 = flows</span><span>multi = matches the syllable before too</span><span>filled = known saying</span></div>
         </section>
       </div>
 
@@ -255,7 +265,7 @@
               </div>
               <button class="reroll" id="reroll" type="button">Reroll</button>
             </div>
-            <div class="hint">Space = reroll · Everyday words make up most of each roll · Mutate is off by default</div>
+            <div class="hint">Everyday words make up most of each roll · Mutate is off by default</div>
           </div>
           <div class="grid" id="grid" aria-live="polite"></div>
         </section>

@@ -73,16 +73,23 @@ $("habitChips").addEventListener("click", e => {
   lyr.focus();
   lyr.setSelectionRange(next[0], next[1]);
 });
-$("owToggle").setAttribute("aria-pressed", String(owOn));
-$("owToggle").addEventListener("click", () => {
-  owOn = !owOn;
-  $("owToggle").setAttribute("aria-pressed", String(owOn));
+$("optOw").checked = owOn;
+$("optOw").addEventListener("change", () => {
+  owOn = $("optOw").checked;
   try { localStorage.setItem("ma.ow", owOn ? "1" : "0"); } catch (e) {}
   renderHabits(); renderHL();
 });
 
 // ---------- vault suggestions ----------
 let vsHiddenFor = null;
+var vsOn = true;
+try { vsOn = localStorage.getItem("ma.vs") !== "0"; } catch (e) {}
+$("optVs").checked = vsOn;
+$("optVs").addEventListener("change", () => {
+  vsOn = $("optVs").checked;
+  try { localStorage.setItem("ma.vs", vsOn ? "1" : "0"); } catch (e) {}
+  renderSuggest();
+});
 function targetLine() {
   const v = lyr.value, pos = lyr.selectionStart ?? v.length;
   const lines = v.split("\n");
@@ -127,7 +134,7 @@ function suggestBars() {
 }
 function renderSuggest() {
   const box = $("vSuggest");
-  if ($("writeView").hidden) { box.hidden = true; return; }
+  if ($("writeView").hidden || !vsOn) { box.hidden = true; return; }
   const r = suggestBars();
   if (!r.list.length || vsHiddenFor === r.key) { box.hidden = true; return; }
   const wasHidden = box.hidden;

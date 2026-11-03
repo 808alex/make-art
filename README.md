@@ -11,12 +11,13 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Rhyme colours: words in the same rhyme family get the same highlight
 - Syllable count on every bar
 - Beat time marks (`[1:24]`), jump to a mark, and loop the section between marks
-- Shortcuts: `Esc` play/pause · `Alt+←/→` 5 s back/forward · `Alt+R` rhyme the last word · `Alt+T` mark time · `[` `]` set loop A/B
+- An Options menu with tick boxes for rhyme colours, syllables, overused words and vault suggestions
+- Keys: `Space` plays/pauses and `←` `→` skip 5 seconds (only when you're not typing)
 
 **Writing habits**
 - Words you lean on across all your songs get a wavy underline, with a "used a lot" list (e.g. "drip ×12 in 3 songs"); tap one to find it in the song
 
-**Beat credits**
+**Beat credits** (in the Beat dropdown, next to the beat controls)
 - Producer, link, licence type and notes saved with each song's beat
 - Flags beats that aren't cleared for release; tapes show the producer and count uncleared tracks, and copied tracklists include "prod."
 
@@ -27,13 +28,13 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Bar and beat counter
 
 **Bar vault**
-- Save a loose bar or two the moment it hits you (Alt+V from anywhere, Ctrl+Enter to save)
+- Save a loose bar or two the moment it hits you
 - Save the line you're on, or a selection, straight from a song
 - Search your bars, filter by what they rhyme with, add one into the song you're writing
 - While you write, the vault suggests saved bars that rhyme with your line or share its topic
 
-**Tapes**
-- Group songs into a tape or EP, reorder tracks, see the total runtime, get name ideas, copy the tracklist
+**EP / Album**
+- Group songs into an EP or album, reorder tracks, see the total runtime, get name ideas, copy the tracklist
 
 **Rhyme finder**
 - Perfect rhymes, slant rhymes and multis, scored 0–100

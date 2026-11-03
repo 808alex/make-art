@@ -92,9 +92,6 @@ function addBar(text, from) {
 $("vaultSave").addEventListener("click", () => {
   if (addBar($("vaultInput").value)) { $("vaultInput").value = ""; toast("Saved to the vault"); $("vaultInput").focus(); }
 });
-$("vaultInput").addEventListener("keydown", e => {
-  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $("vaultSave").click(); }
-});
 $("vaultSearch").addEventListener("input", renderVault);
 
 // from the editor: save the selected lines, or the line the cursor is on
@@ -146,14 +143,6 @@ $("vaultFilter").addEventListener("click", e => {
   if (e.target.closest("#vaultClearEnd")) { vaultEndFilter = null; renderVault(); }
 });
 
-// Alt+V from anywhere: open the vault, ready to type
-document.addEventListener("keydown", e => {
-  if (e.altKey && !e.ctrlKey && !e.metaKey && e.code === "KeyV") {
-    e.preventDefault();
-    setView("vault");
-    setTimeout(() => $("vaultInput").focus(), 50);
-  }
-});
 
 renderVault();
 // end sounds need the rhyme dictionary; redraw once it has loaded

@@ -18,22 +18,18 @@ function safeLink(u) {
 
 let creditSeenBeat = {};
 function renderCredits() {
-  const s = current(), box = $("credits");
-  if (!s || !hasBeat(s)) { box.hidden = true; return; }
-  box.hidden = false;
+  const s = current();
+  renderBeatSummary();
+  const has = hasBeat(s);
+  $("credits").querySelector(".creditgrid").hidden = !has;
+  $("creditEmpty").hidden = has;
+  if (!s || !has) return;
   const ae = document.activeElement;
   if (ae !== $("crProd")) $("crProd").value = s.prod || "";
   if (ae !== $("crLink")) $("crLink").value = s.prodLink || "";
   if (ae !== $("crNotes")) $("crNotes").value = s.licenceNotes || "";
   $("crLic").value = s.licence || "";
 
-  const sum = [];
-  if (s.prod) sum.push("prod. " + s.prod);
-  if (s.licence) sum.push(LICENCES[s.licence] || s.licence);
-  $("creditSum").textContent = sum.length ? sum.join(" · ") : "Add the producer and licence";
-  const flag = $("creditFlag"), ok = CLEARED.has(s.licence || "");
-  flag.hidden = ok;
-  flag.textContent = s.licence === "free-np" ? "not for release" : s.licence === "unknown" ? "check before release" : "no licence yet";
 
   const link = safeLink(s.prodLink), a = $("crOpen");
   a.hidden = !link;
@@ -51,8 +47,28 @@ function renderCredits() {
   const beatKey = s.id + ":" + (s.beatName || s.beatId || "");
   if (!creditSeenBeat[beatKey]) {
     creditSeenBeat[beatKey] = true;
-    if (!s.prod && !s.licence && local) box.open = true;
+    if (!s.prod && !s.licence && local) $("beatBox").open = true;
   }
+}
+// the one-line summary on the closed beat dropdown: name · BPM · key · producer, plus a licence flag
+function renderBeatSummary() {
+  const s = current(), flag = $("creditFlag");
+  if (!s || !hasBeat(s)) {
+    $("bbTitle").textContent = "Add a beat";
+    $("bbFacts").textContent = "drop a file anywhere, or open this";
+    flag.hidden = true;
+    return;
+  }
+  const local = studio.localBeat[s.id];
+  $("bbTitle").textContent = (local && local.name) || s.beatName || "Beat";
+  const bits = [];
+  if (s.bpm) bits.push(Math.round(s.bpm) + " BPM");
+  if (s.key) bits.push(s.key.replace(" major", "").replace(" minor", "m"));
+  if (s.prod) bits.push("prod. " + s.prod);
+  $("bbFacts").textContent = bits.join(" · ");
+  const ok = CLEARED.has(s.licence || "");
+  flag.hidden = ok;
+  flag.textContent = s.licence === "free-np" ? "not for release" : s.licence === "unknown" ? "check licence" : "no licence";
 }
 function creditInput() {
   const s = current(); if (!s) return;
@@ -71,3 +87,6 @@ $("crLink").addEventListener("blur", () => {
   if (v && !safeLink(v)) toast("That link doesn't look right. Paste the full address from your browser.");
 });
 renderCredits();
+// remember whether the beat dropdown was left open
+try { if (localStorage.getItem("ma.beatbox") === "1") $("beatBox").open = true; } catch (e) {}
+$("beatBox").addEventListener("toggle", () => { try { localStorage.setItem("ma.beatbox", $("beatBox").open ? "1" : "0"); } catch (e) {} });

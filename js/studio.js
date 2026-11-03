@@ -491,22 +491,22 @@ $("tapMode").addEventListener("click", e => {
   tapMode = b.dataset.tap; renderTap();
   try { localStorage.setItem(LS_TAP, tapMode); } catch (e2) {}
 });
-$("rhymeLast").addEventListener("click", () => rhymeFromLyrics(1));
-$("rhymeLast2").addEventListener("click", () => rhymeFromLyrics(2));
 $("markTime").addEventListener("click", markTime);
 $("jumpTime").addEventListener("click", jumpToLineTime);
-// keep the cursor where it was when a toolbar button is pressed
-document.querySelectorAll(".edtools .tool").forEach(b => b.addEventListener("mousedown", e => e.preventDefault()));
+// keep the cursor where it was when a toolbar or menu button is pressed
+document.querySelectorAll(".edtools .tool, .edtools .menu button").forEach(b => b.addEventListener("mousedown", e => e.preventDefault()));
 
+// the only keys: Space plays/pauses, ← → skip 5 seconds — never while you're typing
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape") { e.preventDefault(); togglePlay(); return; }
-  if (e.altKey && !e.ctrlKey && !e.metaKey) {
-    if (e.key === "ArrowLeft") { e.preventDefault(); skip(-5); }
-    else if (e.key === "ArrowRight") { e.preventDefault(); skip(5); }
-    else if (e.code === "KeyR") { e.preventDefault(); rhymeFromLyrics(e.shiftKey ? 2 : 1); }
-    else if (e.code === "KeyT") { e.preventDefault(); markTime(); }
-    else if (e.code === "KeyJ") { e.preventDefault(); jumpToLineTime(); }
-  }
+  if (e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+  const t = e.target, tag = t && t.tagName;
+  const isRange = tag === "INPUT" && t.type === "range";
+  const typing = t && (t.isContentEditable || tag === "TEXTAREA" || tag === "SELECT" ||
+    (tag === "INPUT" && !/^(button|range|submit|reset)$/i.test(t.type)));
+  if (typing) return;
+  if (e.code === "Space" || e.key === " ") { e.preventDefault(); togglePlay(); }
+  else if (!isRange && e.key === "ArrowLeft") { e.preventDefault(); skip(-5); }
+  else if (!isRange && e.key === "ArrowRight") { e.preventDefault(); skip(5); }
 });
 
 // ---- boot ----

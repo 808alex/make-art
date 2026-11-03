@@ -92,12 +92,12 @@ function renderHL() {
   $("edwrap").classList.toggle("nosyl", !sylOn);
 }
 function toggleBtn(id, on) { $(id).setAttribute("aria-pressed", String(on)); }
-$("hlToggle").addEventListener("click", () => {
-  hlOn = !hlOn; toggleBtn("hlToggle", hlOn); renderHL();
+$("optHl").addEventListener("change", () => {
+  hlOn = $("optHl").checked; renderHL();
   try { localStorage.setItem("wp.hl", hlOn ? "1" : "0"); } catch (e) {}
 });
-$("sylToggle").addEventListener("click", () => {
-  sylOn = !sylOn; toggleBtn("sylToggle", sylOn); renderHL(); autoGrow();
+$("optSyl").addEventListener("change", () => {
+  sylOn = $("optSyl").checked; renderHL(); autoGrow();
   try { localStorage.setItem("wp.syl", sylOn ? "1" : "0"); } catch (e) {}
 });
 if ("ResizeObserver" in window) {
@@ -162,12 +162,6 @@ audio.addEventListener("loadedmetadata", () => { renderAB(); applyRate(); });
 $("setA").addEventListener("click", () => setAB("a"));
 $("setB").addEventListener("click", () => setAB("b"));
 $("clearAB").addEventListener("click", clearAB);
-document.addEventListener("keydown", e => {
-  const ae = document.activeElement;
-  if (ae && /INPUT|TEXTAREA|SELECT/.test(ae.tagName)) return;
-  if (e.key === "[") { e.preventDefault(); setAB("a"); }
-  else if (e.key === "]") { e.preventDefault(); setAB("b"); }
-});
 
 function updateBarPos(t) {
   const s = current(), el = $("barPos");
@@ -433,6 +427,7 @@ function renderFacts() {
   kf.innerHTML = s.key ? `${esc(s.key)}${s.keyAlt ? ` <small>or ${esc(s.keyAlt)}</small>` : ""}` : "Key —";
   kf.title = s.key ? "Detected. The relative key shares the same notes. Tap to swap." : "Key";
   $("factNote").textContent = factMsg[s.id] || (s.bpm || s.key ? "Detected from the audio, so double-check by ear" : "");
+  if (window.renderBeatSummary) renderBeatSummary();
 }
 $("bpmFact").addEventListener("click", () => {
   const s = current(); if (!s || !s.bpm || !s.bpmAlt) return;
@@ -521,7 +516,7 @@ function songLabel(s) { return (s.title || "").trim() || "Untitled"; }
 function renderTapes() {
   if (!tapes.some(t => t.id === curTape)) curTape = tapes[0] ? tapes[0].id : null;
   const t = tapeById(curTape);
-  $("tapeSelect").innerHTML = tapes.map(x => `<option value="${esc(x.id)}"${x.id === curTape ? " selected" : ""}>${esc(x.name.trim() || "Untitled tape")} · ${x.songIds.length} track${x.songIds.length === 1 ? "" : "s"}</option>`).join("");
+  $("tapeSelect").innerHTML = tapes.map(x => `<option value="${esc(x.id)}"${x.id === curTape ? " selected" : ""}>${esc(x.name.trim() || "Untitled EP")} · ${x.songIds.length} track${x.songIds.length === 1 ? "" : "s"}</option>`).join("");
   $("tapeSelect").hidden = !tapes.length;
   $("deleteTape").hidden = !tapes.length;
   $("tapeBody").hidden = !t;
@@ -561,7 +556,7 @@ $("deleteTape").addEventListener("click", () => {
   if (b.dataset.armed !== "true") { b.dataset.armed = "true"; b.textContent = "Tap again to delete"; clearTimeout(tapeDelT); tapeDelT = setTimeout(() => { b.dataset.armed = "false"; b.textContent = "Delete"; }, 3500); return; }
   b.dataset.armed = "false"; b.textContent = "Delete";
   tapes = tapes.filter(x => x.id !== t.id); curTape = null; saveTapes(); renderTapes();
-  toast(`Deleted “${t.name.trim() || "Untitled tape"}”. The songs are still in Write.`);
+  toast(`Deleted “${t.name.trim() || "Untitled EP"}”. The songs are still in Write.`);
 });
 $("tapeName").addEventListener("input", () => { const t = tapeById(curTape); if (!t) return; t.name = $("tapeName").value; saveTapesSoon(); });
 $("tapeName").addEventListener("change", renderTapes);
@@ -585,7 +580,7 @@ $("copyTracklist").addEventListener("click", () => {
   const t = tapeById(curTape); if (!t) return;
   const songs = t.songIds.map(id => studio.songs.find(s => s.id === id)).filter(Boolean);
   const lines = songs.map((s, i) => `${i + 1}. ${songLabel(s)}${s.prod ? ` (prod. ${s.prod})` : ""}${s.beatDur ? ` [${fmt(s.beatDur)}]` : ""}`);
-  copy(`${t.name.trim() || "Untitled tape"}\n\n${lines.join("\n")}`);
+  copy(`${t.name.trim() || "Untitled EP"}\n\n${lines.join("\n")}`);
 });
 function titleCase(s) { return s.replace(/\b([a-z])/g, (m, c) => c.toUpperCase()); }
 $("nameIdeas").addEventListener("click", () => {
@@ -615,7 +610,7 @@ if ("ResizeObserver" in window) {
 
 // ---------- start ----------
 EXTRAS_READY = true;
-toggleBtn("hlToggle", hlOn); toggleBtn("sylToggle", sylOn);
+$("optHl").checked = hlOn; $("optSyl").checked = sylOn;
 (function startExtras() {
   let v = "write";
   try { v = localStorage.getItem("wp.view") || "write"; } catch (e) {}

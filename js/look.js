@@ -28,6 +28,14 @@
     if (b) applyPal(b.dataset.pal, e);
   });
 
+  // ---------- options menu under the song title ----------
+  const optBtn = $("optBtn"), optMenu = $("optMenu");
+  const setMenu = open => { optMenu.hidden = !open; optBtn.setAttribute("aria-expanded", String(open)); };
+  optBtn.addEventListener("click", () => setMenu(optMenu.hidden));
+  document.addEventListener("click", e => { if (!optMenu.hidden && !e.target.closest(".menuwrap")) setMenu(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !optMenu.hidden) { setMenu(false); optBtn.focus(); } });
+  optMenu.addEventListener("click", e => { if (e.target.closest("button.mi")) setMenu(false); });
+
   // first-paint animation only runs once
   setTimeout(() => root.classList.remove("boot"), 1300);
 
