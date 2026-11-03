@@ -4,6 +4,10 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 
 > Working name. It may change before launch.
 
+**Use it in your browser:** https://808alex.github.io/make-art/ (landing page) · https://808alex.github.io/make-art/app/ (the app)
+
+No account and nothing to install. Everything you write is saved in the browser you're using; use **Download backup** / **Restore backup** in the studio to move it to another browser.
+
 ## Features
 
 **Studio**
@@ -65,6 +69,9 @@ js/extras.js      rhyme colours, syllables, A–B loop, speed, BPM/key, tapes
 js/vault.js       bar vault
 js/credits.js     beat credits (producer, link, licence)
 js/insights.js    vault suggestions while writing, overused words
+js/backup.js      download / restore a backup file (browser-only mode)
+site/             landing page for GitHub Pages (plus favicon and screenshot)
+tools/build_site.py  builds the Pages site into _site/
 js/look.js        theme switch, click ripples, scroll reveal, smooth scroll, beat pulse
 data/rhymes.txt   ~42k words with encoded pronunciations (built by tools/)
 tools/            scripts that build data/rhymes.txt
@@ -80,9 +87,18 @@ python3 -m http.server 8000
 
 Then open http://localhost:8000. Locally, songs save in your browser only.
 
+## The website (GitHub Pages)
+
+`tools/build_site.py` builds `_site/`: the landing page from `site/` at the root and the app at `/app/` (it wraps `index.html` in a full HTML document and copies `css/`, `js/` and `data/`). The workflow in `.github/workflows/pages.yml` runs it on every push to `main` and deploys to GitHub Pages.
+
+To turn it on once: repo **Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the "Deploy site" workflow from the Actions tab.
+
 ## Saving and sync
 
-Right now the app is published as a Claude artifact. Songs, tapes and beats sync through the artifact's built-in storage, which is private to each signed-in user:
+There are two ways the same code saves your work:
+
+- **On the website (or opened locally):** everything is saved in that browser: songs, EPs and the vault in localStorage, beats in IndexedDB. Nothing is sent anywhere. Backup files move songs, EPs and the vault between browsers (not beats).
+- **As a Claude artifact:** songs, EPs, the vault and beats sync through the artifact's built-in storage, which is private to each signed-in Claude user:
 
 - Songs: one document per song in the `data/users/<id>` collection
 - Tapes: one document with id `tapes` in the same collection
@@ -105,3 +121,4 @@ python3 tools/enc.py          # compresses it to rhymes.dat, then copy to data/r
 - Word ranking: frequencies from the `wordfreq` package. Its data is CC BY-SA 4.0, so before a public launch either credit it properly or re-rank the words from a source with a looser licence.
 - MP4 audio muxing: `mp4-muxer` (MIT), loaded from jsDelivr
 - Fonts: Rubik Mono One, Manrope and JetBrains Mono, all from Google Fonts (OFL)
+- Because the word ranking in `data/rhymes.txt` comes from wordfreq, that file is shared under CC BY-SA 4.0 (see `data/NOTICE.md`).

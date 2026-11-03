@@ -6,3 +6,4 @@ tools/rhymes.txt
 tools/rhymes.dat
 *.wav
 *.mp3
+_site/

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Make Art</title>
+<meta name="description" content="A free browser studio for writing music: lyrics over your beat with rhyme colours, a rhyme finder for slant rhymes and multis, a bar vault, BPM and key detection. No account, nothing to install.">
+<meta property="og:title" content="Make Art">
+<meta property="og:description" content="Write lyrics over your beat with rhyme colours, a rhyme finder, a bar vault and BPM/key detection. Free, in your browser.">
+<meta property="og:image" content="shot.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Same visual language as the app: chunky display type, a tilted sticker, cobalt + marigold. */
+:root {
+  --a: #2f4dff; --s: #ffb21f; --s-ink: #1a1405;
+  --bg: color-mix(in oklab, var(--a) 7%, #e7e8ec);
+  --panel: color-mix(in oklab, var(--a) 3%, #f6f7f9);
+  --ink: color-mix(in oklab, var(--a) 14%, #12131a);
+  --muted: color-mix(in oklab, var(--a) 16%, #5c6070);
+  --line: color-mix(in oklab, var(--a) 16%, #c7cad3);
+  --accent: var(--a); --accent-ink: #fff;
+  --display: "Rubik Mono One", "Arial Black", Impact, sans-serif;
+  --body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --ease: cubic-bezier(.2, .8, .2, 1); --spring: cubic-bezier(.34, 1.5, .6, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: color-mix(in oklab, var(--a) 15%, #0b0c12);
+    --panel: color-mix(in oklab, var(--a) 13%, #141620);
+    --ink: color-mix(in oklab, var(--a) 6%, #eceef5);
+    --muted: color-mix(in oklab, var(--a) 18%, #9ca2b8);
+    --line: color-mix(in oklab, var(--a) 24%, #282b3a);
+    --accent: #7b8fff; --accent-ink: #0b0c12;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); }
+a { color: inherit; }
+.wrap {
+  max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 72px;
+  padding: 28px max(20px, env(safe-area-inset-right, 0px)) 56px max(20px, env(safe-area-inset-left, 0px));
+}
+nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.mark { font: 400 18px/1 var(--display); text-decoration: none; display: inline-flex; gap: .35em; align-items: center; }
+.mark span { background: var(--s); color: var(--s-ink); padding: 2px 6px; transform: rotate(-3deg); display: inline-block; }
+nav .links { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none; cursor: pointer;
+  font: 700 14px/1 var(--mono); padding: 14px 20px; border-radius: 12px; border: 1.5px solid var(--line);
+  background: var(--panel); color: var(--ink);
+  transition: transform .25s var(--spring), border-color .2s var(--ease), background-color .2s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); border-color: var(--ink); }
+.btn:active { transform: scale(.96); }
+.btn.go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-size: 15px; padding: 16px 24px; }
+.btn.small { padding: 10px 14px; font-size: 12px; }
+.btn:focus-visible { outline: 3px solid var(--s); outline-offset: 3px; }
+
+.hero { display: grid; gap: 26px; justify-items: start; }
+h1 { margin: 0; font: 400 clamp(2.8rem, 10vw, 6.4rem)/.9 var(--display); letter-spacing: -.02em; text-wrap: balance; }
+h1 span { display: inline-block; background: var(--s); color: var(--s-ink); padding: 0 .12em; transform: rotate(-2deg); animation: bop 1.9s var(--ease) infinite; }
+@keyframes bop { 0%, 100% { transform: rotate(-2deg) scale(1); } 8% { transform: rotate(-2deg) scale(1.06); } 16% { transform: rotate(-2deg) scale(1); } }
+.lede { margin: 0; font-size: clamp(1.1rem, 2.3vw, 1.35rem); max-width: 40ch; color: var(--muted); }
+.lede b { color: var(--ink); }
+.cta { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.note { font: 500 13px var(--mono); color: var(--muted); }
+
+.shot { margin: 0; display: grid; gap: 10px; }
+.shot img { width: 100%; height: auto; display: block; border-radius: 16px; border: 1.5px solid var(--line); box-shadow: 0 30px 70px -40px rgba(10, 14, 40, .55); }
+.shot figcaption { font: 500 13px var(--mono); color: var(--muted); }
+
+h2 { margin: 0 0 18px; font: 400 clamp(1.3rem, 3vw, 1.8rem)/1.1 var(--display); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.card {
+  background: var(--panel); border: 1.5px solid var(--line); border-radius: 16px; padding: 22px; display: grid; gap: 8px; align-content: start;
+  transition: transform .35s var(--spring), border-color .2s var(--ease);
+}
+.card:hover { transform: translateY(-3px); border-color: var(--ink); }
+.card h3 { margin: 0; font: 800 1.1rem/1.25 var(--body); display: flex; gap: 10px; align-items: center; }
+.card h3 i { font: 700 11px/1 var(--mono); font-style: normal; padding: 5px 8px; border-radius: 999px; background: var(--s); color: var(--s-ink); }
+.card p { margin: 0; color: var(--muted); }
+
+.private { background: var(--ink); color: var(--bg); border-radius: 20px; padding: clamp(24px, 4vw, 40px); display: grid; gap: 14px; }
+.private h2 { margin: 0; }
+.private p { margin: 0; max-width: 62ch; opacity: .85; }
+.private ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; max-width: 62ch; }
+
+footer { display: grid; gap: 10px; font: 500 13px/1.6 var(--mono); color: var(--muted); border-top: 1.5px solid var(--line); padding-top: 22px; }
+footer p { margin: 0; }
+
+/* sections ease in as you scroll; they start visible so nothing is hidden without JS */
+.reveal { transition: opacity .8s var(--ease), transform .9s var(--ease); }
+.reveal.pre { opacity: .45; transform: translateY(24px); }
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .reveal.pre { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="mark" href="./">Make <span>Art</span></a>
+    <div class="links">
+      <a class="btn small" href="https://github.com/808alex/make-art">GitHub</a>
+      <a class="btn small go" href="app/">Open the app</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Make <span>Art</span></h1>
+    <p class="lede">A free studio in your browser for writing over beats. <b>Drop a beat, write your bars</b>, and get rhymes, flips and your own saved lines right next to you.</p>
+    <div class="cta">
+      <a class="btn go" href="app/">Open the app →</a>
+      <a class="btn" href="#features">What it does</a>
+    </div>
+    <span class="note">No account. Nothing to install. Your songs stay in your browser.</span>
+  </header>
+
+  <figure class="shot reveal">
+    <img src="shot.png" width="1600" height="1000" alt="The Make Art studio: a song being written over a beat on the left with rhyming words highlighted in matching colours, and the rhyme finder on the right listing rhymes for the word drip.">
+    <figcaption>Lyrics on the left with rhyme colours and syllable counts, rhymes on the right, the beat along the bottom.</figcaption>
+  </figure>
+
+  <section id="features" class="reveal">
+    <h2>What's in it</h2>
+    <div class="grid">
+      <article class="card"><h3>Write over the beat</h3><p>Drag a beat onto the page and write. Space plays and pauses, the arrow keys skip back and forward, and you can stamp times on lines to jump back to a verse.</p></article>
+      <article class="card"><h3>Rhyme colours</h3><p>Words that rhyme light up in the same colour as you type, so you can see your scheme. Every bar shows its syllable count.</p></article>
+      <article class="card"><h3>Rhyme finder</h3><p>Perfect rhymes, slant rhymes and multis, each scored out of 100. Type two or three words and it finds phrases that match the whole flow.</p></article>
+      <article class="card"><h3>BPM and key <i>auto</i></h3><p>Detected the moment a beat loads. Slow it down or speed it up, keep the pitch or let it move like a slowed edit, and loop just one section.</p></article>
+      <article class="card"><h3>Bar vault</h3><p>Save a line the second it hits you. While you write, the vault suggests saved bars that rhyme with your line or fit its topic.</p></article>
+      <article class="card"><h3>Writing habits</h3><p>Words you lean on across all your songs get flagged, like "drip ×12 in 3 songs", so the writing stays fresh.</p></article>
+      <article class="card"><h3>Beat credits</h3><p>Producer, link and licence saved with every beat, with a flag on anything you're not cleared to release.</p></article>
+      <article class="card"><h3>EP / Album</h3><p>Put songs in order, see the runtime, get name ideas and copy a tracklist with producer credits.</p></article>
+      <article class="card"><h3>Five colour themes</h3><p>Classic, Grape, Moss, Lagoon and Cherry, each in light and dark.</p></article>
+    </div>
+  </section>
+
+  <section class="private reveal">
+    <h2>Your stuff stays yours</h2>
+    <p>There's no server and no account. Everything you write is saved in the browser you're using, and nothing is sent anywhere.</p>
+    <ul>
+      <li>Someone else opening this site gets their own empty studio. They can't see your songs.</li>
+      <li>To move your work to another browser or computer, use Download backup and Restore backup in the studio. Beats aren't in the backup, so load them again there.</li>
+      <li>Clearing your browser's site data deletes what's saved, so keep a backup of anything you care about.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Made by <a href="https://github.com/808alex">808alex</a>. The code is on <a href="https://github.com/808alex/make-art">GitHub</a>.</p>
+    <p>Pronunciations from the CMU Pronouncing Dictionary. Word frequencies from <a href="https://github.com/rspeer/wordfreq">wordfreq</a> by Robyn Speer, CC BY-SA 4.0.</p>
+  </footer>
+</div>
+<script>
+  // ease sections in as they scroll into view (they're already visible without this)
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.remove("pre"); io.unobserve(e.target); } }), { threshold: .12 });
+    document.querySelectorAll(".reveal").forEach(el => { if (el.getBoundingClientRect().top > innerHeight * .9) { el.classList.add("pre"); io.observe(el); } });
+  }
+</script>
+</body>
+</html>

@@ -503,3 +503,8 @@ textarea.vaultinput {
 .mi:hover { background: var(--bg); }
 .mi input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
 
+/* Backup row (browser-only mode) */
+.backup { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--rad); background: var(--bg); border: var(--bw) dashed var(--line); }
+.backup .hint { flex: 1 1 220px; min-width: 0; }
+.backup label.ghost { display: inline-flex; align-items: center; }
+

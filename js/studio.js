@@ -28,7 +28,8 @@ function setMode(mode) {
   el.dataset.state = mode === "cloud" ? "cloud" : "local";
   el.textContent = mode === "cloud" ? "Synced to your account" : "Saved in this browser only";
   el.title = mode === "cloud" ? "Songs save to your Claude account and show up on any device you're signed in on."
-    : "Sign in to Claude and open this page there to sync songs across devices.";
+    : "Everything is saved in this browser. Use a backup file to move it to another browser.";
+  if ($("backupRow")) $("backupRow").hidden = mode === "cloud";
 }
 function setSaveState(t) { $("saveState").textContent = t; }
 
@@ -156,6 +157,7 @@ $("deleteSong").addEventListener("click", () => {
   }
   if (gone.beatId && studio.assets && !studio.songs.some(x => x.beatId === gone.beatId)) studio.assets.delete(gone.beatId).catch(() => {});
   if (studio.localBeat[gone.id]) { URL.revokeObjectURL(studio.localBeat[gone.id].url); delete studio.localBeat[gone.id]; }
+  beatStore.del(gone.id);
   ensureSong();
   openSong(studio.songs[0].id);
   toast(`Deleted “${(gone.title || "").trim() || "Untitled"}”`);
@@ -229,7 +231,7 @@ function renderBeatInfo() {
   const st = $("beatState");
   if (m) { st.textContent = m.msg; st.dataset.tone = m.tone; }
   else if (s.beatId) { st.textContent = studio.mode === "cloud" ? "Synced to your account" : "Synced"; st.dataset.tone = "ok"; }
-  else if (local) { st.textContent = "Plays on this device only"; st.dataset.tone = ""; }
+  else if (local) { st.textContent = studio.mode === "cloud" ? "Saved on this device only" : "Saved in this browser"; st.dataset.tone = ""; }
   else if (s.beatName) { st.textContent = "This beat wasn't synced. Load it again to play it here."; st.dataset.tone = ""; }
   else { st.textContent = "Or drag an MP3, WAV or M4A anywhere onto the page"; st.dataset.tone = ""; }
 }
@@ -250,11 +252,42 @@ function clearAudio() {
   $("plName").textContent = "No beat on this song";
   $("plCur").textContent = "0:00"; $("plDur").textContent = "0:00"; $("seek").value = 0;
 }
+// beats you load are also kept in this browser (IndexedDB), so they survive a reload even without syncing
+const beatStore = (() => {
+  let dbp = null;
+  const open = () => dbp || (dbp = new Promise((res, rej) => {
+    try {
+      const r = indexedDB.open("make-art", 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("beats");
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    } catch (e) { rej(e); }
+  }));
+  const run = (mode, fn) => open().then(db => new Promise((res, rej) => {
+    const t = db.transaction("beats", mode), rq = fn(t.objectStore("beats"));
+    t.oncomplete = () => res(rq && rq.result);
+    t.onerror = () => rej(t.error);
+  }));
+  return {
+    put: (id, file) => run("readwrite", st => st.put({ blob: file, name: file.name }, id)).catch(() => {}),
+    get: id => run("readonly", st => st.get(id)).catch(() => null),
+    del: id => run("readwrite", st => st.delete(id)).catch(() => {})
+  };
+})();
+const beatLookups = new Set();
 function loadBeatFor(s) {
   const local = studio.localBeat[s.id];
   if (local) setAudio(local.url, local.name);
   else if (s.beatId) setAudio("/_blob/" + s.beatId, s.beatName || "Beat");
   else clearAudio();
+  if (!local && !s.beatId && s.beatName && !beatLookups.has(s.id)) {
+    beatLookups.add(s.id);
+    beatStore.get(s.id).then(rec => {
+      if (!rec || !rec.blob || studio.localBeat[s.id]) return;
+      studio.localBeat[s.id] = { url: URL.createObjectURL(rec.blob), name: rec.name || s.beatName };
+      if (current() === s) loadBeatFor(s);
+    });
+  }
   renderBeatInfo();
   if (EXTRAS_READY) onSongBeat(s);
   if (window.renderCredits) renderCredits();
@@ -310,12 +343,12 @@ async function toSyncable(file, onProgress) {
 }
 async function syncBeat(sid, file) {
   const why = {
-    no_encoder: "Plays on this device only. This browser can't convert it for syncing; Chrome or Edge can, or load an M4A.",
-    decode: "Plays on this device only. Couldn't read this file to convert it.",
-    too_large: "Plays on this device only. Too big to sync (20 MB max).",
-    unsupported_type: "Plays on this device only. This format can't be synced.",
-    quota_or_state: "Plays on this device only. Beat storage is full; delete old songs to free space.",
-    rate_limited: "Plays on this device only. Too many uploads at once; load it again in a minute."
+    no_encoder: "Saved on this device only. This browser can't convert it for syncing; Chrome or Edge can, or load an M4A.",
+    decode: "Saved on this device only. Couldn't read this file to convert it.",
+    too_large: "Saved on this device only. Too big to sync (20 MB max).",
+    unsupported_type: "Saved on this device only. This format can't be synced.",
+    quota_or_state: "Saved on this device only. Beat storage is full; delete old songs to free space.",
+    rate_limited: "Saved on this device only. Too many uploads at once; load it again in a minute."
   };
   try {
     setBeatMsg(sid, "Getting it ready for your other devices…");
@@ -334,7 +367,7 @@ async function syncBeat(sid, file) {
     setBeatMsg(sid, "Synced to your account", "ok");
     renderSongSelect();
   } catch (e) {
-    setBeatMsg(sid, why[e && e.code] || "Plays on this device only. Couldn't sync it this time; load it again to retry.");
+    setBeatMsg(sid, why[e && e.code] || "Saved on this device only. Couldn't sync it this time; load it again to retry.");
   }
 }
 const isAudioFile = f => !!f && (/^(audio|video)\//.test(f.type) || /\.(mp3|wav|m4a|aac|ogg|oga|opus|flac|webm|mp4|aif|aiff)$/i.test(f.name));
@@ -356,8 +389,9 @@ function loadBeatFile(file) {
   loadBeatFor(s);
   markDirty();
   analyzeSong(sid, file);
-  if (studio.mode !== "cloud") { setBeatMsg(sid, "Plays on this device only"); return; }
-  if (!studio.assets) { setBeatMsg(sid, "Plays on this device only. Beat syncing is only for the page's owner and editors."); return; }
+  beatStore.put(sid, file);
+  if (studio.mode !== "cloud") { setBeatMsg(sid, "Saved in this browser"); return; }
+  if (!studio.assets) { setBeatMsg(sid, "Saved on this device only. Beat syncing is only for the page's owner and editors."); return; }
   syncBeat(sid, file);
 }
 

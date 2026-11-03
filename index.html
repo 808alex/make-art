@@ -35,7 +35,7 @@
         <button type="button" data-pal="lagoon" aria-pressed="false" aria-label="Lagoon: teal and coral" title="Lagoon" style="--sa:#0b7f7b;--ss:#ff7a5a"></button>
         <button type="button" data-pal="cherry" aria-pressed="false" aria-label="Cherry: red and sky blue" title="Cherry" style="--sa:#cf2338;--ss:#9fd8ff"></button>
       </div>
-      <p class="sub">Write over your beat with the rhyme finder and word generator open beside you. Songs save to your Claude account, so they're on every device you sign in on.</p>
+      <p class="sub">Write over your beat with the rhyme finder, your bar vault and the word generator right beside you.</p>
     </div>
   </header>
 
@@ -44,6 +44,12 @@
       <div class="sechead">
         <h2>Studio</h2>
         <span class="sync" id="syncState" data-state="local">Connecting…</span>
+      </div>
+      <div class="backup" id="backupRow" hidden>
+        <span class="hint">Saved in this browser. Move your songs, EPs and vault to another browser with a backup file.</span>
+        <button class="ghost" type="button" id="bkDown">Download backup</button>
+        <label class="ghost" for="bkFile">Restore backup</label>
+        <input type="file" id="bkFile" accept="application/json,.json" hidden>
       </div>
       <div class="stabs" role="tablist" aria-label="Studio views">
         <button type="button" role="tab" id="tabWrite" data-view="write" aria-selected="true">Write</button>
@@ -346,4 +352,5 @@
 <script src="js/vault.js"></script>
 <script src="js/credits.js"></script>
 <script src="js/insights.js"></script>
+<script src="js/backup.js"></script>
 <script src="js/look.js"></script>
