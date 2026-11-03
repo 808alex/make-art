@@ -28,9 +28,9 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Results grouped into Everyday, Brands & buzz, Archive pieces and Rare & distinct
 
 **Looks**
-- Mono: soft greys and charcoal, clean grotesk type (Instrument Sans), follows your light/dark setting
-- Underground: ink black, warm off-white, one muted oxblood accent, serif italics (Instrument Serif) with Geist, film grain
-- Motion: smooth scrolling on desktop, click ripples, staggered results, scroll reveals, and a play button and logo that pulse with the beat
+- Five colour themes, each a pair: Classic (cobalt + marigold), Grape (violet + lime), Moss (green + pink), Lagoon (teal + coral), Cherry (red + sky blue)
+- Every theme works in light and dark, following your device setting
+- Motion: smooth scrolling on desktop, click ripples, staggered results, scroll reveals, and a play button and logo sticker that pulse with the beat
 
 **Word generator** (its own tab next to Rhymes)
 - Mostly calm everyday words, mixed with slang, labels, cars and places
@@ -40,15 +40,15 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 
 ```
 index.html        page markup (no <html>/<head>; the host adds that)
-css/styles.css    layout and components; colour and font tokens for both looks at the top
-css/look.css      look-specific styling (mono, underground) and all motion
+css/styles.css    layout and components; colour themes and font tokens at the top
+css/look.css      theme picker and all motion
 js/engine.js      rhyme engine: pronunciations, scoring, phrase builder
 js/sayings.js     sayings used by the phrase column
 js/generator.js   word pools, generator, stash, shared helpers (esc, toast, copy)
 js/finder.js      rhyme finder UI
 js/studio.js      songs, saving and sync, beat loading and upload, player basics
 js/extras.js      rhyme colours, syllables, A–B loop, speed, BPM/key, tapes
-js/look.js        look switch, click ripples, scroll reveal, smooth scroll, beat pulse
+js/look.js        theme switch, click ripples, scroll reveal, smooth scroll, beat pulse
 data/rhymes.txt   ~42k words with encoded pronunciations (built by tools/)
 tools/            scripts that build data/rhymes.txt
 ```
@@ -86,4 +86,4 @@ python3 tools/enc.py          # compresses it to rhymes.dat, then copy to data/r
 - Pronunciations: CMU Pronouncing Dictionary (BSD-style licence)
 - Word ranking: frequencies from the `wordfreq` package. Its data is CC BY-SA 4.0, so before a public launch either credit it properly or re-rank the words from a source with a looser licence.
 - MP4 audio muxing: `mp4-muxer` (MIT), loaded from jsDelivr
-- Fonts: Instrument Sans, Instrument Serif, Geist and Geist Mono, all from Google Fonts (OFL)
+- Fonts: Rubik Mono One, Manrope and JetBrains Mono, all from Google Fonts (OFL)

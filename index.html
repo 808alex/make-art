@@ -3,13 +3,14 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <script>
-  // pick the saved look before anything paints, so there's no flash of the other one
+  // apply the saved colour theme before anything paints
   (function () {
-    var s = "ug";
-    try { s = localStorage.getItem("ma.skin") || "ug"; } catch (e) {}
-    document.documentElement.dataset.skin = s === "mono" ? "mono" : "ug";
+    var p = "classic";
+    try { p = localStorage.getItem("ma.pal") || "classic"; } catch (e) {}
+    if (["classic", "grape", "moss", "lagoon", "cherry"].indexOf(p) < 0) p = "classic";
+    document.documentElement.dataset.pal = p;
     document.documentElement.classList.add("boot");
   })();
 </script>
@@ -18,20 +19,21 @@
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/look.css">
 
-<div class="fx fx-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
-<div class="fx fx-scan" aria-hidden="true"></div>
-<div class="fx fx-grain" aria-hidden="true"></div>
 
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1 data-text="make art">Make <span>Art</span></h1>
+      <h1>Make <span>Art</span></h1>
       <span class="label">Studio · rhymes · words</span>
     </div>
     <div class="headright">
-      <div class="skin" id="skinSwitch" role="group" aria-label="Look">
-        <button type="button" data-skin="mono" aria-pressed="false">Mono</button>
-        <button type="button" data-skin="ug" aria-pressed="true">Underground</button>
+      <div class="pal" id="palPicker" role="group" aria-label="Colour theme">
+        <span class="label">Theme</span>
+        <button type="button" data-pal="classic" aria-pressed="true" aria-label="Classic: cobalt and marigold" title="Classic" style="--sa:#2f4dff;--ss:#ffb21f"></button>
+        <button type="button" data-pal="grape" aria-pressed="false" aria-label="Grape: violet and lime" title="Grape" style="--sa:#6b3cf0;--ss:#c6f25c"></button>
+        <button type="button" data-pal="moss" aria-pressed="false" aria-label="Moss: green and pink" title="Moss" style="--sa:#1d7a4e;--ss:#ffa3be"></button>
+        <button type="button" data-pal="lagoon" aria-pressed="false" aria-label="Lagoon: teal and coral" title="Lagoon" style="--sa:#0b7f7b;--ss:#ff7a5a"></button>
+        <button type="button" data-pal="cherry" aria-pressed="false" aria-label="Cherry: red and sky blue" title="Cherry" style="--sa:#cf2338;--ss:#9fd8ff"></button>
       </div>
       <p class="sub">Write over your beat with the rhyme finder and word generator open beside you. Songs save to your Claude account, so they're on every device you sign in on.</p>
     </div>

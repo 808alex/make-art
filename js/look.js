@@ -1,20 +1,18 @@
-// ---- Look: skin switch, click ripples, scroll reveal, smooth scrolling, tab motion, beat pulse ----
+// ---- Look: colour themes, click ripples, scroll reveal, smooth scrolling, tab motion, beat pulse ----
 (function () {
   const root = document.documentElement;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ---------- skins ----------
-  function markSkin(s) {
-    document.querySelectorAll("#skinSwitch button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.skin === s)));
+  // ---------- colour themes ----------
+  function markPal(p) {
+    document.querySelectorAll("#palPicker button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pal === p)));
   }
-  function applySkin(s, ev) {
-    if (root.dataset.skin === s) return;
+  function applyPal(p, ev) {
+    if (root.dataset.pal === p) return;
     const go = () => {
-      root.dataset.skin = s;
-      markSkin(s);
-      try { localStorage.setItem("ma.skin", s); } catch (e) {}
-      if (typeof autoGrow === "function") autoGrow();
-      placeTabLine();
+      root.dataset.pal = p;
+      markPal(p);
+      try { localStorage.setItem("ma.pal", p); } catch (e) {}
     };
     if (document.startViewTransition && !reduced && ev) {
       const x = ev.clientX || innerWidth / 2, y = ev.clientY || 0;
@@ -24,10 +22,10 @@
       document.startViewTransition(go);
     } else go();
   }
-  markSkin(root.dataset.skin);
-  $("skinSwitch").addEventListener("click", e => {
-    const b = e.target.closest("button[data-skin]");
-    if (b) applySkin(b.dataset.skin, e);
+  markPal(root.dataset.pal);
+  $("palPicker").addEventListener("click", e => {
+    const b = e.target.closest("button[data-pal]");
+    if (b) applyPal(b.dataset.pal, e);
   });
 
   // first-paint animation only runs once
