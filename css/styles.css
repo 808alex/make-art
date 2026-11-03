@@ -423,3 +423,51 @@ textarea.vaultinput {
 .baracts { margin-left: auto; display: flex; flex-wrap: wrap; gap: 6px; }
 .tool.danger[data-armed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
+/* Beat credits */
+.credits { border: var(--bw) solid var(--line); border-radius: var(--rad-lg); background: var(--bg); }
+.credits summary {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 11px 14px; cursor: pointer; list-style: none;
+}
+.credits summary::-webkit-details-marker { display: none; }
+.credits summary::after { content: "+"; margin-left: auto; font: 700 16px/1 var(--mono); color: var(--muted); transition: transform .3s var(--ease); }
+.credits[open] summary::after { transform: rotate(45deg); }
+.credsum { font-weight: 700; overflow-wrap: anywhere; min-width: 0; }
+.credflag {
+  font: 700 10.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 5px 8px; border-radius: var(--rad-pill);
+  background: var(--accent); color: var(--accent-ink);
+}
+.creditgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px 12px; padding: 0 14px 14px; }
+.creditgrid .wide { grid-column: 1 / -1; }
+.field { display: grid; gap: 5px; min-width: 0; }
+.field input, .field select, .field textarea {
+  width: 100%; min-width: 0; font: 600 14px var(--body); padding: 9px 11px; border-radius: var(--rad);
+  border: var(--bw) solid var(--line); background: var(--panel); color: var(--ink);
+}
+.field textarea { min-height: 62px; font: 500 14px/1.5 var(--body); }
+.credlink { font: 700 12px var(--mono); color: var(--accent); justify-self: start; }
+.tmeta .nolic { color: var(--accent); }
+
+/* Vault suggestions under the editor */
+.vsuggest { display: grid; gap: 8px; padding: 12px 14px; border-radius: var(--rad-lg); border: var(--bw) dashed var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--bg)); }
+.vs-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.vs-why { font: 500 12px var(--mono); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.vs-head .icon { margin-left: auto; width: 26px; height: 26px; font: 700 12px/1 var(--mono); }
+.vs-list { display: grid; gap: 6px; }
+.vs-item { display: grid; gap: 6px; padding: 10px 12px; border-radius: var(--rad); background: var(--panel); border: var(--bw) solid var(--line); }
+.vs-item p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 600 15px/1.5 var(--body); }
+.vs-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.vs-meta .tool { margin-left: auto; }
+.vs-tag { font: 700 11px/1 var(--mono); padding: 5px 8px; border-radius: var(--rad-pill); background: var(--sticker); color: var(--sticker-ink); }
+.vs-tag.soft { background: transparent; color: var(--muted); border: var(--bw) solid var(--line); }
+
+/* Overused words */
+.habits { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.habitchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.habit {
+  font: 500 12px/1 var(--mono); padding: 7px 10px; border-radius: var(--rad-pill); cursor: pointer;
+  border: var(--bw) dashed var(--line-strong); background: transparent; color: var(--ink);
+}
+.habit b { font-weight: 800; }
+.habit small { color: var(--muted); }
+.hl .ow { text-decoration: underline wavy; text-decoration-color: var(--muted); text-decoration-thickness: 1.5px; text-underline-offset: 5px; }
+

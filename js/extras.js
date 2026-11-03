@@ -80,7 +80,9 @@ function renderHL() {
     while (ti < toks.length && toks[ti].li === li) {
       const t = toks[ti];
       out += esc(line.slice(pos, t.s));
-      out += color[ti] ? `<mark style="--c:var(--r${color[ti]})">${esc(t.w)}</mark>` : esc(t.w);
+      let w = color[ti] ? `<mark style="--c:var(--r${color[ti]})">${esc(t.w)}</mark>` : esc(t.w);
+      if (window.isOverused && isOverused(t.w)) w = `<span class="ow">${w}</span>`;
+      out += w;
       pos = t.e; n += sylCount(t.w); ti++;
     }
     out += esc(line.slice(pos));
@@ -476,7 +478,7 @@ function setView(v) {
     $("tab" + k[0].toUpperCase() + k.slice(1)).setAttribute("aria-selected", String(k === v));
   });
   try { localStorage.setItem("wp.view", v); } catch (e) {}
-  if (v === "write") autoGrow();
+  if (v === "write") { autoGrow(); if (window.insightsSchedule) insightsSchedule(); }
   else if (v === "tapes") renderTapes();
   else if (window.renderVault) renderVault();
 }
@@ -534,7 +536,7 @@ function renderTapes() {
     <li class="track${animTracks ? " in" : ""}" style="--i:${i}">
       <span class="tno">${String(i + 1).padStart(2, "0")}</span>
       <button type="button" class="ttitle" data-open="${esc(s.id)}" title="Open in Write">${esc(songLabel(s))}</button>
-      <span class="tmeta">${s.bpm ? Math.round(s.bpm) + " BPM" : ""}${s.bpm && s.key ? " · " : ""}${s.key ? esc(s.key.replace(" major", "").replace(" minor", "m")) : ""}${s.beatDur ? ` · ${fmt(s.beatDur)}` : ""}</span>
+      <span class="tmeta">${s.prod ? `prod. ${esc(s.prod)} · ` : ""}${window.licenceOk && !licenceOk(s) ? `<b class="nolic">licence?</b> · ` : ""}${s.bpm ? Math.round(s.bpm) + " BPM" : ""}${s.bpm && s.key ? " · " : ""}${s.key ? esc(s.key.replace(" major", "").replace(" minor", "m")) : ""}${s.beatDur ? ` · ${fmt(s.beatDur)}` : ""}</span>
       <span class="tbtns">
         <button type="button" class="tbtn" data-mv="${i}" data-dir="-1" aria-label="Move up"${i === 0 ? " disabled" : ""}>↑</button>
         <button type="button" class="tbtn" data-mv="${i}" data-dir="1" aria-label="Move down"${i === songs.length - 1 ? " disabled" : ""}>↓</button>
@@ -545,7 +547,8 @@ function renderTapes() {
   $("addSongSel").innerHTML = avail.length ? avail.map(s => `<option value="${esc(s.id)}">${esc(songLabel(s))}</option>`).join("") : `<option value="">Every song is on this tape</option>`;
   $("addSongSel").disabled = $("addTrack").disabled = !avail.length;
   const total = songs.reduce((a, s) => a + (s.beatDur || 0), 0), unknown = songs.filter(s => !s.beatDur).length;
-  $("tapeStats").textContent = songs.length ? `${songs.length} track${songs.length === 1 ? "" : "s"} · ${fmt(total)}${unknown ? ` + ${unknown} without a beat length` : ""}` : "";
+  const unlicensed = window.licenceOk ? songs.filter(s => !licenceOk(s)).length : 0;
+  $("tapeStats").textContent = songs.length ? `${songs.length} track${songs.length === 1 ? "" : "s"} · ${fmt(total)}${unknown ? ` + ${unknown} without a beat length` : ""}${unlicensed ? ` · ${unlicensed} not cleared for release` : ""}` : "";
 }
 $("tapeSelect").addEventListener("change", () => { curTape = $("tapeSelect").value; try { localStorage.setItem("wp.tape.cur", curTape); } catch (e) {} $("ideaChips").innerHTML = ""; renderTapes(); });
 $("newTape").addEventListener("click", () => {
@@ -581,7 +584,7 @@ $("trackList").addEventListener("click", e => {
 $("copyTracklist").addEventListener("click", () => {
   const t = tapeById(curTape); if (!t) return;
   const songs = t.songIds.map(id => studio.songs.find(s => s.id === id)).filter(Boolean);
-  const lines = songs.map((s, i) => `${i + 1}. ${songLabel(s)}${s.beatDur ? ` (${fmt(s.beatDur)})` : ""}`);
+  const lines = songs.map((s, i) => `${i + 1}. ${songLabel(s)}${s.prod ? ` (prod. ${s.prod})` : ""}${s.beatDur ? ` [${fmt(s.beatDur)}]` : ""}`);
   copy(`${t.name.trim() || "Untitled tape"}\n\n${lines.join("\n")}`);
 });
 function titleCase(s) { return s.replace(/\b([a-z])/g, (m, c) => c.toUpperCase()); }

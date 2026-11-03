@@ -2,7 +2,7 @@
 const $ = id => document.getElementById(id);
 const LS_SONGS = "wp.songs.v1", LS_CUR = "wp.song.cur", LS_TAP = "wp.tap";
 const TAPES_DOC = "tapes", VAULT_DOC = "vault";
-const SONG_EXTRA = ["bpm", "bpmAlt", "beatOffset", "bpmManual", "key", "keyAlt", "beatDur", "analyzed", "loopA", "loopB"];
+const SONG_EXTRA = ["bpm", "bpmAlt", "beatOffset", "bpmManual", "key", "keyAlt", "beatDur", "analyzed", "loopA", "loopB", "prod", "prodLink", "licence", "licenceNotes"];
 var EXTRAS_READY = false;
 const lyr = $("lyrics"), titleIn = $("songTitle"), audio = $("beat"), songSel = $("songSelect");
 const studio = {
@@ -46,6 +46,7 @@ function updateStats() {
   const words = (lyr.value.replace(/\[\d+:\d{2}\]/g, "").match(/[^\s]+/g) || []).length;
   $("lyricStats").textContent = `${lines.length} bar${lines.length === 1 ? "" : "s"} · ${words} word${words === 1 ? "" : "s"}`;
   if (EXTRAS_READY) hlSchedule();
+  if (window.insightsSchedule) insightsSchedule();
 }
 
 // ---- saving ----
@@ -256,6 +257,7 @@ function loadBeatFor(s) {
   else clearAudio();
   renderBeatInfo();
   if (EXTRAS_READY) onSongBeat(s);
+  if (window.renderCredits) renderCredits();
 }
 
 async function toSyncable(file, onProgress) {
@@ -346,6 +348,8 @@ function loadBeatFile(file) {
   const sid = s.id;
   if (studio.localBeat[sid]) URL.revokeObjectURL(studio.localBeat[sid].url);
   studio.localBeat[sid] = { url: URL.createObjectURL(file), name: file.name };
+  // a different beat file means different credits; re-loading the same file keeps them
+  if (s.beatName && s.beatName !== file.name) ["prod", "prodLink", "licence", "licenceNotes"].forEach(k => { s[k] = null; });
   s.beatName = file.name;
   delete studio.beatMsg[sid];
   ["bpm", "bpmAlt", "beatOffset", "bpmManual", "key", "keyAlt", "beatDur", "analyzed", "loopA", "loopB"].forEach(k => { s[k] = null; });

@@ -13,6 +13,13 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Beat time marks (`[1:24]`), jump to a mark, and loop the section between marks
 - Shortcuts: `Esc` play/pause · `Alt+←/→` 5 s back/forward · `Alt+R` rhyme the last word · `Alt+T` mark time · `[` `]` set loop A/B
 
+**Writing habits**
+- Words you lean on across all your songs get a wavy underline, with a "used a lot" list (e.g. "drip ×12 in 3 songs"); tap one to find it in the song
+
+**Beat credits**
+- Producer, link, licence type and notes saved with each song's beat
+- Flags beats that aren't cleared for release; tapes show the producer and count uncleared tracks, and copied tracklists include "prod."
+
 **Beat player**
 - Load MP3, WAV, M4A and other audio files: pick one, drag it anywhere onto the page, or paste a copied file
 - BPM and key detection the moment a beat loads, shown in the player next to Keep pitch (adjusted for speed, and for pitch when pitch follows speed), plus tap tempo
@@ -23,6 +30,7 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Save a loose bar or two the moment it hits you (Alt+V from anywhere, Ctrl+Enter to save)
 - Save the line you're on, or a selection, straight from a song
 - Search your bars, filter by what they rhyme with, add one into the song you're writing
+- While you write, the vault suggests saved bars that rhyme with your line or share its topic
 
 **Tapes**
 - Group songs into a tape or EP, reorder tracks, see the total runtime, get name ideas, copy the tracklist
@@ -54,6 +62,8 @@ js/finder.js      rhyme finder UI
 js/studio.js      songs, saving and sync, beat loading and upload, player basics
 js/extras.js      rhyme colours, syllables, A–B loop, speed, BPM/key, tapes
 js/vault.js       bar vault
+js/credits.js     beat credits (producer, link, licence)
+js/insights.js    vault suggestions while writing, overused words
 js/look.js        theme switch, click ripples, scroll reveal, smooth scroll, beat pulse
 data/rhymes.txt   ~42k words with encoded pronunciations (built by tools/)
 tools/            scripts that build data/rhymes.txt

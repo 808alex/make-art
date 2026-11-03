@@ -76,6 +76,7 @@ function renderVault() {
       </div>
     </li>`;
   }).join("") : (vault.length ? `<li class="empty">No bars match.</li>` : "");
+  if (window.insightsSchedule) insightsSchedule();
 }
 
 function addBar(text, from) {

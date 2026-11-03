@@ -79,6 +79,37 @@
         <span class="factnote" id="factNote"></span>
       </div>
 
+      <details class="credits" id="credits" hidden>
+        <summary>
+          <span class="label">Beat credits</span>
+          <span class="credsum" id="creditSum">Add the producer and licence</span>
+          <span class="credflag" id="creditFlag" hidden></span>
+        </summary>
+        <div class="creditgrid">
+          <label class="field"><span class="label">Producer</span>
+            <input type="text" id="crProd" list="prodList" placeholder="Who made the beat" autocomplete="off"></label>
+          <label class="field"><span class="label">Licence</span>
+            <select id="crLic">
+              <option value="">Not set</option>
+              <option value="own">My own beat</option>
+              <option value="free-p">Free for profit (credit the producer)</option>
+              <option value="free-np">Free for non-profit only</option>
+              <option value="lease-mp3">Lease: MP3</option>
+              <option value="lease-wav">Lease: WAV</option>
+              <option value="lease-stems">Lease: trackouts / stems</option>
+              <option value="unlimited">Unlimited lease</option>
+              <option value="exclusive">Exclusive rights</option>
+              <option value="unknown">Not sure yet</option>
+            </select></label>
+          <label class="field wide"><span class="label">Link</span>
+            <input type="url" id="crLink" placeholder="BeatStars, YouTube, Drive, the producer's page…" autocomplete="off"></label>
+          <label class="field wide"><span class="label">Notes</span>
+            <textarea id="crNotes" rows="2" placeholder="Order number, stream or sales limits, where the contract is, how to credit…"></textarea></label>
+          <a class="credlink" id="crOpen" href="#" target="_blank" rel="noopener noreferrer" hidden>Open the beat's page ↗</a>
+        </div>
+        <datalist id="prodList"></datalist>
+      </details>
+
       <div class="edtools" role="toolbar" aria-label="Writing tools">
         <button class="tool" type="button" id="rhymeLast" title="Alt+R">Rhyme last word</button>
         <button class="tool" type="button" id="rhymeLast2" title="Alt+Shift+R">Rhyme last 2</button>
@@ -88,6 +119,7 @@
         <button class="tool" type="button" id="toVault" title="Saves the selected lines, or the line you're on, to your bar vault">Save to vault</button>
         <button class="tool toggle" type="button" id="hlToggle" aria-pressed="true">Rhyme colours</button>
         <button class="tool toggle" type="button" id="sylToggle" aria-pressed="true">Syllables</button>
+        <button class="tool toggle" type="button" id="owToggle" aria-pressed="true" title="Underlines words you've used a lot across all your songs">Overused</button>
       </div>
 
       <div class="edwrap" id="edwrap">
@@ -95,9 +127,22 @@
         <textarea id="lyrics" class="lyrics" spellcheck="false" placeholder="Start writing. Load a beat, press Esc to play or pause, and mark times so you can jump back to a verse."></textarea>
       </div>
 
+      <div class="vsuggest" id="vSuggest" hidden>
+        <div class="vs-head">
+          <span class="label">From your vault</span>
+          <span class="vs-why" id="vsWhy"></span>
+          <button type="button" class="icon" id="vsHide" aria-label="Hide these suggestions" title="Hide until the line changes">✕</button>
+        </div>
+        <div class="vs-list" id="vsList"></div>
+      </div>
+
       <div class="edfoot">
         <span id="lyricStats">0 bars · 0 words</span>
         <span id="saveState"></span>
+      </div>
+      <div class="habits" id="habits" hidden>
+        <span class="label">Used a lot</span>
+        <div class="habitchips" id="habitChips"></div>
       </div>
       <div class="keys">
         <span><kbd>Esc</kbd> play / pause</span>
@@ -289,4 +334,6 @@
 <script src="js/studio.js"></script>
 <script src="js/extras.js"></script>
 <script src="js/vault.js"></script>
+<script src="js/credits.js"></script>
+<script src="js/insights.js"></script>
 <script src="js/look.js"></script>
