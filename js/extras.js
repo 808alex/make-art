@@ -183,9 +183,28 @@ function applyRate() {
   audio.preservesPitch = keepPitch; audio.mozPreservesPitch = keepPitch; audio.webkitPreservesPitch = keepPitch;
   renderTempo();
 }
+// BPM and key readout in the player, adjusted for speed (and for pitch when pitch isn't kept)
+function shiftKey(key, semis) {
+  if (!key || !semis) return key;
+  const m = key.match(/^(\S+) (major|minor)$/);
+  if (!m) return key;
+  const i = PC.indexOf(m[1]);
+  if (i < 0) return key;
+  return PC[(((i + semis) % 12) + 12) % 12] + " " + m[2];
+}
 function renderTempo() {
-  const s = current(), r = +$("speedSel").value || 1;
-  $("tempoNow").textContent = s && s.bpm && r !== 1 ? `${Math.round(s.bpm * r)} BPM at ${r}×` : "";
+  const s = current(), r = +$("speedSel").value || 1, el = $("tempoNow");
+  if (!s || !(studio.localBeat[s.id] || s.beatId)) { el.hidden = true; return; }
+  el.hidden = false;
+  if (analyzing.has(s.id) && !s.bpm && !s.key) { el.innerHTML = '<span class="tf-busy">finding BPM &amp; key…</span>'; return; }
+  const semis = !keepPitch && r !== 1 ? Math.round(12 * Math.log2(r)) : 0;
+  const bpm = s.bpm ? Math.round(s.bpm * r) : null;
+  const key = shiftKey(s.key, semis);
+  const parts = [];
+  parts.push(`<b>${bpm ? bpm : "–"}</b> BPM${r !== 1 && s.bpm ? ` <small>(${Math.round(s.bpm)} at 1×)</small>` : ""}`);
+  parts.push(`<b>${key ? esc(key.replace(" major", "").replace(" minor", "m")) : "–"}</b>${semis ? ` <small>(${semis > 0 ? "+" : ""}${semis})</small>` : ""}`);
+  el.innerHTML = parts.join('<i aria-hidden="true">·</i>');
+  el.title = s.key ? `Key ${key}${semis ? `, moved ${semis > 0 ? "up" : "down"} ${Math.abs(semis)} semitone${Math.abs(semis) === 1 ? "" : "s"} because pitch follows speed` : ""}. Detected from the audio.` : "";
 }
 $("speedSel").addEventListener("change", applyRate);
 $("pitchBtn").addEventListener("click", () => {
@@ -375,6 +394,7 @@ async function analyzeSong(sid, source) {
   if (analyzing.has(sid)) return;
   analyzing.add(sid);
   setFactNote(sid, "Finding BPM and key…");
+  if (sid === studio.cur) renderTempo();
   try {
     let buf;
     if (source) buf = await source.arrayBuffer();

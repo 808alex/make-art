@@ -352,7 +352,15 @@ textarea.lyrics:focus-visible { outline: none; }
   font: 700 12px var(--mono); padding: 5px 6px; border-radius: var(--rad); background: var(--pl-bg); color: var(--pl-ink);
   border: var(--bw) solid color-mix(in srgb, var(--pl-ink) 30%, transparent);
 }
-.tempo { opacity: .8; }
+.tempo {
+  display: inline-flex; align-items: baseline; gap: 8px; padding: 6px 11px; border-radius: var(--rad);
+  border: var(--bw) solid color-mix(in srgb, var(--pl-ink) 30%, transparent); font-variant-numeric: tabular-nums;
+}
+.tempo b { font: 700 14px/1 var(--mono); color: var(--pl-accent); }
+.tempo small { opacity: .65; font-size: 11px; }
+.tempo i { font-style: normal; opacity: .45; }
+.tempo .tf-busy { opacity: .8; animation: tfPulse 1s ease-in-out infinite alternate; }
+@keyframes tfPulse { from { opacity: .35; } to { opacity: .9; } }
 .wrap { padding-bottom: calc(var(--plh, 120px) + 28px); }
 .toast { bottom: calc(var(--plh, 120px) + 14px + env(safe-area-inset-bottom, 0px)); }
 .tolyrics { bottom: calc(var(--plh, 120px) + 12px); }
