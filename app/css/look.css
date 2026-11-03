@@ -1,0 +1,187 @@
+/* ===================== Look: theme picker and all motion ===================== */
+
+/* ---------- theme swatches in the header ---------- */
+.headright { display: grid; gap: 12px; justify-items: end; }
+@media (max-width: 720px) { .headright { justify-items: start; } }
+.pal { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.pal .label { margin-right: 4px; }
+.pal button {
+  width: 30px; height: 30px; border-radius: 50%; cursor: pointer; padding: 0;
+  border: var(--bw) solid var(--line); background: linear-gradient(135deg, var(--sa) 0 50%, var(--ss) 50% 100%);
+  box-shadow: 0 0 0 0 var(--ink);
+}
+.pal button[aria-pressed="true"] { box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4.5px var(--ink); transform: scale(1.06); }
+@media (hover: hover) { .pal button:hover { transform: scale(1.12) rotate(-8deg); } }
+
+/* ---------- shared motion ---------- */
+button, .rw, .chip, .tool, .ghost, .pchip, .pbtn, .fact, .beatbtn, .tbtn, .icon, .card .word, .stabs button, .seg button, .reroll {
+  transition: transform .22s var(--spring), background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), box-shadow .25s var(--ease), opacity .2s var(--ease);
+}
+@media (hover: hover) {
+  .rw:hover, .chip:hover, .tool:hover, .ghost:hover, .fact:hover, .tbtn:hover:not(:disabled), .beatbtn:hover, .reroll:hover, .endtag:hover { transform: translateY(-1px); }
+  .card:hover { transform: translateY(-2px); }
+}
+.rw:active, .chip:active, .tool:active, .ghost:active, .pchip:active, .fact:active, .tbtn:active, .beatbtn:active,
+.icon:active, .seg button:active, .stabs button:active { transform: scale(.94); transition-duration: .08s; }
+.pbtn:active { transform: scale(.9); transition-duration: .08s; }
+.reroll:active { transform: scale(.95); transition-duration: .08s; }
+.card { transition: transform .35s var(--spring), border-color .25s var(--ease), box-shadow .3s var(--ease); }
+.card .word:active { transform: scale(.97); }
+
+/* click ripple */
+.rippled { position: relative; overflow: hidden; isolation: isolate; }
+.ripple {
+  position: absolute; border-radius: 50%; pointer-events: none; z-index: -1;
+  width: var(--rs); height: var(--rs); left: var(--rx); top: var(--ry); margin: calc(var(--rs) / -2) 0 0 calc(var(--rs) / -2);
+  background: currentColor; opacity: .22; transform: scale(0); animation: ripple .6s var(--ease) forwards;
+}
+@keyframes ripple { to { transform: scale(1); opacity: 0; } }
+
+/* first paint: panels settle in once, quickly */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.boot header, .boot .studio, .boot .tools > * { animation: rise .7s var(--ease) both; }
+.boot .studio { animation-delay: .08s; }
+.boot .tools > *:nth-child(2) { animation-delay: .14s; }
+.boot .tools > *:nth-child(3) { animation-delay: .2s; }
+.boot .tools > *:nth-child(n+4) { animation-delay: .26s; }
+
+/* scroll reveal: only for things that start below the fold */
+.pre { opacity: .35; transform: translateY(26px) scale(.985); filter: blur(5px); }
+.revealing { transition: opacity .8s var(--ease), transform .9s var(--ease), filter .8s var(--ease); }
+
+/* generator cards and rhyme chips stagger in */
+@keyframes cardIn { from { opacity: 0; transform: translateY(12px) scale(.95); } to { opacity: 1; transform: none; } }
+.card.fresh { animation: cardIn .55s var(--spring) both; animation-delay: calc(var(--i, 0) * 30ms); }
+@keyframes chipIn { from { opacity: 0; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: none; } }
+.rlist .rw.in { animation: chipIn .4s var(--ease) both; animation-delay: calc(var(--i, 0) * 14ms); }
+@keyframes viewIn { from { opacity: 0; transform: translateX(var(--from, 12px)); } to { opacity: 1; transform: none; } }
+.view.enter, .tpanel.enter { animation: viewIn .4s var(--ease) both; }
+.track.in, .bar.in, .vs-item.in { animation: chipIn .35s var(--ease) both; animation-delay: calc(var(--i, 0) * 40ms); }
+
+/* tabs: sliding underline */
+.stabs { position: relative; }
+.stabs button[aria-selected="true"] { box-shadow: none; }
+.stabs .tabline {
+  position: absolute; bottom: -1px; left: 0; height: 2.5px; width: 0; background: var(--accent);
+  transition: transform .45s var(--spring), width .45s var(--spring);
+}
+
+/* toast springs in */
+.toast { z-index: 60; transition: opacity .25s var(--ease), transform .45s var(--spring); }
+
+/* play button breathes with the beat while playing */
+.pbtn.play { position: relative; overflow: visible; }
+.pbtn.play::after {
+  content: ""; position: absolute; inset: -4px; border-radius: inherit; border: 2px solid var(--pl-accent);
+  opacity: 0; pointer-events: none;
+}
+.playing .pbtn.play::after { animation: beatring var(--beatdur) var(--ease) infinite; animation-delay: var(--beatphase, 0s); }
+@keyframes beatring { 0% { opacity: .75; transform: scale(1); } 100% { opacity: 0; transform: scale(1.45); } }
+.barpos { transition: color .2s; }
+
+/* smooth scrolling (Lenis) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* theme switch: circular reveal */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: reveal .75s var(--ease) both; }
+@keyframes reveal { from { clip-path: circle(0 at var(--vx, 50%) var(--vy, 0%)); } to { clip-path: circle(var(--vr, 150vmax) at var(--vx, 50%) var(--vy, 0%)); } }
+
+/* dropdowns open with a little motion */
+@keyframes menuIn { from { opacity: 0; transform: translateY(-4px) scale(.97); } to { opacity: 1; transform: none; } }
+.menu:not([hidden]) { animation: menuIn .22s var(--spring) both; transform-origin: top left; }
+.beatbox[open] .bb-body { animation: chipIn .3s var(--ease) both; }
+
+/* ---------- zoom control in the header ---------- */
+.zoomctl { display: inline-flex; align-items: center; margin-left: 6px; border: var(--bw) solid var(--line); border-radius: var(--rad-pill); background: var(--panel); overflow: hidden; }
+.pal .zoomctl button {
+  width: auto; height: auto; border: 0; border-radius: 0; background: transparent; box-shadow: none; transform: none;
+  font: 700 12px/1 var(--mono); color: var(--ink); padding: 8px 10px; cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.pal .zoomctl button:hover:not(:disabled) { background: var(--bg); transform: none; }
+.pal .zoomctl button:disabled { opacity: .35; cursor: default; }
+.pal .zoomctl #zoomReset { min-width: 5.2ch; padding: 8px 4px; border-inline: var(--bw) solid var(--line); }
+.pal .zoomctl #zoomOut, .pal .zoomctl #zoomIn { font-size: 15px; padding: 6px 11px; }
+
+/* ---------- first-run tour: a tall card in the middle of the screen ---------- */
+.helpbtn {
+  margin-left: 6px; white-space: nowrap; font: 700 11px/1 var(--mono); letter-spacing: .04em; padding: 9px 12px; border-radius: var(--rad-pill);
+  border: var(--bw) solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer;
+}
+.pal .helpbtn { width: auto; height: auto; padding: 9px 12px; border-radius: var(--rad-pill); background: var(--panel); box-shadow: none; transform: none; }
+.helpbtn:hover, .pal .helpbtn:hover { border-color: var(--ink); transform: translateY(-1px); }
+.tour {
+  position: fixed; inset: 0; z-index: 95; display: grid; place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
+  animation: dzFade .25s var(--ease) both;
+}
+.tour.leaving { animation: tourOut .25s var(--ease) both; }
+html.tour-open, html.tour-open body { overflow: hidden; }
+.tour { overscroll-behavior: contain; }
+.tour-card { overscroll-behavior: contain; }
+@keyframes tourOut { to { opacity: 0; } }
+.tour-card {
+  width: min(400px, 100%); min-height: min(560px, calc(100vh - 32px)); max-height: calc(100vh - 32px); overflow-y: auto;
+  display: grid; grid-template-rows: auto 1fr auto auto; gap: 18px; padding: 22px;
+  background: var(--panel); color: var(--ink); border: var(--bw) solid var(--line); border-radius: 22px;
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .55);
+  animation: tourPop .5s var(--spring) both;
+}
+@keyframes tourPop { from { opacity: 0; transform: translateY(14px) scale(.94); } to { opacity: 1; transform: none; } }
+.tour-card.warn .tour-art { background: var(--accent); color: var(--accent-ink); }
+.tour-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.tour-count { font: 700 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.tour-skipbtn { font: 700 12px/1 var(--mono); padding: 8px 10px; border-radius: var(--rad); border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.tour-skipbtn:hover { color: var(--ink); background: var(--bg); }
+.tour-page { display: grid; gap: 14px; align-content: start; }
+.tour-page.enter { animation: viewIn .4s var(--ease) both; }
+.tour-art {
+  width: 84px; height: 84px; border-radius: 22px; display: grid; place-items: center; transform: rotate(-4deg);
+  background: var(--sticker); color: var(--sticker-ink); margin: 8px 0 6px;
+}
+.tour-art svg { width: 40px; height: 40px; }
+.tour-page h2 { font-size: 1.35rem; line-height: 1.15; }
+.tour-body { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ink); }
+.tour-list { margin: 0; padding-left: 1.15em; display: grid; gap: 8px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+.tour-dots { display: flex; gap: 6px; justify-content: center; }
+.tour-dots span { width: 7px; height: 7px; border-radius: 99px; background: var(--line); transition: width .35s var(--spring), background-color .2s; }
+.tour-dots span.on { width: 22px; background: var(--accent); }
+.tour-nav { display: flex; gap: 10px; }
+.tour-nav [data-next] { flex: 1; margin: 0; font-size: 15px; }
+.tour-nav [hidden] + [data-next] { flex: 1; }
+
+/* ---------- drop a beat anywhere ---------- */
+.dropzone {
+  position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; pointer-events: none;
+  padding: max(16px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  animation: dzFade .2s var(--ease) both;
+}
+.dz-card {
+  display: grid; justify-items: center; gap: 10px; text-align: center; padding: 42px 54px;
+  border: 3px dashed var(--sticker-ink); border-radius: var(--rad-lg);
+  background: var(--sticker); color: var(--sticker-ink); transform: rotate(-1.5deg);
+  animation: dzPop .45s var(--spring) both;
+}
+.dz-card svg { width: 44px; height: 44px; animation: dzBob 1s var(--ease) infinite alternate; }
+.dz-card strong { font: 400 1.6rem/1 var(--display); }
+.dz-card span { font: 600 13px var(--mono); opacity: .8; }
+@keyframes dzFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dzPop { from { opacity: 0; transform: rotate(-1.5deg) scale(.85); } to { opacity: 1; transform: rotate(-1.5deg) scale(1); } }
+@keyframes dzBob { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+
+/* ---------- the logo sticker bops on every beat ---------- */
+.playing h1 span { animation: bop var(--beatdur) var(--ease) infinite; animation-delay: var(--beatphase, 0s); }
+@keyframes bop { 0% { transform: rotate(-2deg) scale(1.07); } 100% { transform: rotate(-2deg) scale(1); } }
+
+/* ---------- less motion when asked ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .pre { opacity: 1; transform: none; filter: none; }
+}
