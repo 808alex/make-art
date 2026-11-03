@@ -467,16 +467,20 @@ function onSongBeat(s) {
 }
 
 // ---------- studio tabs ----------
+const VIEWS = ["write", "tapes", "vault"];
+const currentView = () => VIEWS.find(k => !$(k + "View").hidden) || "write";
 function setView(v) {
-  $("writeView").hidden = v !== "write";
-  $("tapesView").hidden = v !== "tapes";
-  $("tabWrite").setAttribute("aria-selected", String(v === "write"));
-  $("tabTapes").setAttribute("aria-selected", String(v === "tapes"));
+  if (!VIEWS.includes(v)) v = "write";
+  VIEWS.forEach(k => {
+    $(k + "View").hidden = k !== v;
+    $("tab" + k[0].toUpperCase() + k.slice(1)).setAttribute("aria-selected", String(k === v));
+  });
   try { localStorage.setItem("wp.view", v); } catch (e) {}
-  if (v === "write") autoGrow(); else renderTapes();
+  if (v === "write") autoGrow();
+  else if (v === "tapes") renderTapes();
+  else if (window.renderVault) renderVault();
 }
-$("tabWrite").addEventListener("click", () => setView("write"));
-$("tabTapes").addEventListener("click", () => setView("tapes"));
+VIEWS.forEach(k => $("tab" + k[0].toUpperCase() + k.slice(1)).addEventListener("click", () => setView(k)));
 
 // ---------- tapes ----------
 const LS_TAPES = "wp.tapes.v1";
@@ -612,7 +616,7 @@ toggleBtn("hlToggle", hlOn); toggleBtn("sylToggle", sylOn);
 (function startExtras() {
   let v = "write";
   try { v = localStorage.getItem("wp.view") || "write"; } catch (e) {}
-  setView(v === "tapes" ? "tapes" : "write");
+  setView(v);
   const s = current();
   if (s) onSongBeat(s);
   hlSchedule();

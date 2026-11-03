@@ -19,6 +19,11 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - A–B loop, speed from 0.7× to 1.25×, with or without keeping the pitch
 - Bar and beat counter
 
+**Bar vault**
+- Save a loose bar or two the moment it hits you (Alt+V from anywhere, Ctrl+Enter to save)
+- Save the line you're on, or a selection, straight from a song
+- Search your bars, filter by what they rhyme with, add one into the song you're writing
+
 **Tapes**
 - Group songs into a tape or EP, reorder tracks, see the total runtime, get name ideas, copy the tracklist
 
@@ -48,6 +53,7 @@ js/generator.js   word pools, generator, stash, shared helpers (esc, toast, copy
 js/finder.js      rhyme finder UI
 js/studio.js      songs, saving and sync, beat loading and upload, player basics
 js/extras.js      rhyme colours, syllables, A–B loop, speed, BPM/key, tapes
+js/vault.js       bar vault
 js/look.js        theme switch, click ripples, scroll reveal, smooth scroll, beat pulse
 data/rhymes.txt   ~42k words with encoded pronunciations (built by tools/)
 tools/            scripts that build data/rhymes.txt
@@ -69,6 +75,7 @@ Right now the app is published as a Claude artifact. Songs, tapes and beats sync
 
 - Songs: one document per song in the `data/users/<id>` collection
 - Tapes: one document with id `tapes` in the same collection
+- Bar vault: one document with id `vault` in the same collection
 - Beats: uploaded as MP4/WebM audio (MP3/WAV are converted in the browser first)
 
 All of this lives in `js/studio.js` (`initCloud`, `saveSong`, `applySnapshot`, `syncBeat`) and in `saveTapes` in `js/extras.js`. To launch as a standalone website, replace that layer with your own backend (for example Supabase for auth, database and file storage). The rest of the app doesn't depend on it.

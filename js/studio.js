@@ -1,7 +1,7 @@
 // ---- Studio: songs, autosave, beat player ----
 const $ = id => document.getElementById(id);
 const LS_SONGS = "wp.songs.v1", LS_CUR = "wp.song.cur", LS_TAP = "wp.tap";
-const TAPES_DOC = "tapes";
+const TAPES_DOC = "tapes", VAULT_DOC = "vault";
 const SONG_EXTRA = ["bpm", "bpmAlt", "beatOffset", "bpmManual", "key", "keyAlt", "beatDur", "analyzed", "loopA", "loopB"];
 var EXTRAS_READY = false;
 const lyr = $("lyrics"), titleIn = $("songTitle"), audio = $("beat"), songSel = $("songSelect");
@@ -163,11 +163,12 @@ $("deleteSong").addEventListener("click", () => {
 // ---- cloud sync ----
 function applySnapshot(snap) {
   const remote = new Map();
-  let remoteTapes = null;
+  let remoteTapes = null, remoteVault = null;
   snap.docs.forEach(d => {
     if (!d.exists) return;
     const v = d.data() || {};
     if (d.id === TAPES_DOC) { remoteTapes = v; return; }
+    if (d.id === VAULT_DOC) { remoteVault = v; return; }
     remote.set(d.id, { id: d.id, title: "", lyrics: "", beatId: null, beatName: "", ...v });
   });
   const first = studio.mode !== "cloud";
@@ -194,6 +195,7 @@ function applySnapshot(snap) {
   }
   toPush.forEach(s => saveSong(s));
   if (EXTRAS_READY) applyRemoteTapes(remoteTapes, first);
+  if (window.applyRemoteVault) applyRemoteVault(remoteVault, first);
 }
 async function initCloud() {
   const c = window.claude;

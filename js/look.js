@@ -98,12 +98,12 @@
   window.placeTabLines = placeTabLine;
   const baseSetView = setView;
   setView = function (v) {
-    const was = $("writeView").hidden ? "tapes" : "write";
+    const was = currentView();
     baseSetView(v);
     placeTabLine();
-    if (was !== v) {
-      const el = v === "write" ? $("writeView") : $("tapesView");
-      el.style.setProperty("--from", v === "tapes" ? "18px" : "-18px");
+    if (was !== v && VIEWS.includes(v)) {
+      const el = $(v + "View");
+      el.style.setProperty("--from", VIEWS.indexOf(v) > VIEWS.indexOf(was) ? "18px" : "-18px");
       el.classList.remove("enter"); void el.offsetWidth; el.classList.add("enter");
     }
   };

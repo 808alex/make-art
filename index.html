@@ -48,6 +48,7 @@
       <div class="stabs" role="tablist" aria-label="Studio views">
         <button type="button" role="tab" id="tabWrite" data-view="write" aria-selected="true">Write</button>
         <button type="button" role="tab" id="tabTapes" data-view="tapes" aria-selected="false">Tapes</button>
+        <button type="button" role="tab" id="tabVault" data-view="vault" aria-selected="false">Vault</button>
       </div>
 
       <div class="view" id="writeView">
@@ -84,6 +85,7 @@
         <button class="tool" type="button" id="markTime" title="Alt+T">Mark beat time</button>
         <button class="tool" type="button" id="jumpTime" title="Alt+J">Jump to line's time</button>
         <button class="tool" type="button" id="loopPart" title="Loops from this line's marked time to the next mark">Loop this part</button>
+        <button class="tool" type="button" id="toVault" title="Saves the selected lines, or the line you're on, to your bar vault">Save to vault</button>
         <button class="tool toggle" type="button" id="hlToggle" aria-pressed="true">Rhyme colours</button>
         <button class="tool toggle" type="button" id="sylToggle" aria-pressed="true">Syllables</button>
       </div>
@@ -103,6 +105,7 @@
         <span><kbd>Alt</kbd>+<kbd>R</kbd> rhyme last word (or selection)</span>
         <span><kbd>Alt</kbd>+<kbd>T</kbd> mark time</span>
         <span><kbd>[</kbd> <kbd>]</kbd> set loop A / B while playing</span>
+        <span><kbd>Alt</kbd>+<kbd>V</kbd> bar vault</span>
       </div>
       </div>
 
@@ -131,6 +134,25 @@
           </div>
         </div>
         <p class="empty" id="tapeEmpty" hidden>Group your songs into a tape or EP and put them in order. Start one with New tape.</p>
+      </div>
+
+      <div class="view" id="vaultView" hidden>
+        <div class="vaultadd">
+          <label class="label" for="vaultInput">New bar</label>
+          <textarea id="vaultInput" class="vaultinput" rows="2" placeholder="Got a bar? Drop it here before it's gone."></textarea>
+          <div class="row">
+            <button class="reroll" type="button" id="vaultSave">Save bar</button>
+            <span class="hint">Ctrl+Enter saves · Alt+V opens the vault from anywhere</span>
+          </div>
+        </div>
+        <div class="vaulttools">
+          <label class="visually-hidden" for="vaultSearch">Search your bars</label>
+          <input type="search" id="vaultSearch" placeholder="Search your bars" autocomplete="off">
+          <span class="label" id="vaultCount"></span>
+        </div>
+        <div class="vaultfilter" id="vaultFilter" hidden></div>
+        <ol class="vaultlist" id="vaultList"></ol>
+        <p class="empty" id="vaultEmpty">No bars yet. When a line hits you, save it here and pull it into a song later.</p>
       </div>
     </section>
 
@@ -266,4 +288,5 @@
 <script src="js/finder.js"></script>
 <script src="js/studio.js"></script>
 <script src="js/extras.js"></script>
+<script src="js/vault.js"></script>
 <script src="js/look.js"></script>
