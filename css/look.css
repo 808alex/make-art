@@ -90,6 +90,27 @@ html.lenis, html.lenis body { height: auto; }
 ::view-transition-new(root) { animation: reveal .75s var(--ease) both; }
 @keyframes reveal { from { clip-path: circle(0 at var(--vx, 50%) var(--vy, 0%)); } to { clip-path: circle(var(--vr, 150vmax) at var(--vx, 50%) var(--vy, 0%)); } }
 
+/* ---------- drop a beat anywhere ---------- */
+.dropzone {
+  position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; pointer-events: none;
+  padding: max(16px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  animation: dzFade .2s var(--ease) both;
+}
+.dz-card {
+  display: grid; justify-items: center; gap: 10px; text-align: center; padding: 42px 54px;
+  border: 3px dashed var(--sticker-ink); border-radius: var(--rad-lg);
+  background: var(--sticker); color: var(--sticker-ink); transform: rotate(-1.5deg);
+  animation: dzPop .45s var(--spring) both;
+}
+.dz-card svg { width: 44px; height: 44px; animation: dzBob 1s var(--ease) infinite alternate; }
+.dz-card strong { font: 400 1.6rem/1 var(--display); }
+.dz-card span { font: 600 13px var(--mono); opacity: .8; }
+@keyframes dzFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dzPop { from { opacity: 0; transform: rotate(-1.5deg) scale(.85); } to { opacity: 1; transform: rotate(-1.5deg) scale(1); } }
+@keyframes dzBob { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+
 /* ---------- the logo sticker bops on every beat ---------- */
 .playing h1 span { animation: bop var(--beatdur) var(--ease) infinite; animation-delay: var(--beatphase, 0s); }
 @keyframes bop { 0% { transform: rotate(-2deg) scale(1.07); } 100% { transform: rotate(-2deg) scale(1); } }

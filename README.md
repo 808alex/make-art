@@ -14,7 +14,7 @@ A music-making workspace for writing over beats: a lyrics studio with a beat pla
 - Shortcuts: `Esc` play/pause · `Alt+←/→` 5 s back/forward · `Alt+R` rhyme the last word · `Alt+T` mark time · `[` `]` set loop A/B
 
 **Beat player**
-- Load MP3, WAV, M4A and other audio files
+- Load MP3, WAV, M4A and other audio files: pick one, drag it anywhere onto the page, or paste a copied file
 - BPM and key detection, plus tap tempo
 - A–B loop, speed from 0.7× to 1.25×, with or without keeping the pitch
 - Bar and beat counter

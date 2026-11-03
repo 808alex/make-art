@@ -228,7 +228,7 @@ function renderBeatInfo() {
   else if (s.beatId) { st.textContent = studio.mode === "cloud" ? "Synced to your account" : "Synced"; st.dataset.tone = "ok"; }
   else if (local) { st.textContent = "Plays on this device only"; st.dataset.tone = ""; }
   else if (s.beatName) { st.textContent = "This beat wasn't synced. Load it again to play it here."; st.dataset.tone = ""; }
-  else { st.textContent = "MP3, WAV, M4A and more"; st.dataset.tone = ""; }
+  else { st.textContent = "Or drag an MP3, WAV or M4A anywhere onto the page"; st.dataset.tone = ""; }
 }
 function setAudio(src, name) {
   if (audio.dataset.src !== src) {
@@ -333,9 +333,13 @@ async function syncBeat(sid, file) {
     setBeatMsg(sid, why[e && e.code] || "Plays on this device only. Couldn't sync it this time; load it again to retry.");
   }
 }
+const isAudioFile = f => !!f && (/^(audio|video)\//.test(f.type) || /\.(mp3|wav|m4a|aac|ogg|oga|opus|flac|webm|mp4|aif|aiff)$/i.test(f.name));
 $("beatFile").addEventListener("change", e => {
   const file = e.target.files && e.target.files[0];
   e.target.value = "";
+  if (file) loadBeatFile(file);
+});
+function loadBeatFile(file) {
   const s = current(); if (!file || !s) return;
   const sid = s.id;
   if (studio.localBeat[sid]) URL.revokeObjectURL(studio.localBeat[sid].url);
@@ -349,7 +353,33 @@ $("beatFile").addEventListener("change", e => {
   if (studio.mode !== "cloud") { setBeatMsg(sid, "Plays on this device only"); return; }
   if (!studio.assets) { setBeatMsg(sid, "Plays on this device only. Beat syncing is only for the page's owner and editors."); return; }
   syncBeat(sid, file);
-});
+}
+
+// ---- drop a beat anywhere on the page, or paste a copied audio file ----
+(function dropBeats() {
+  const zone = $("dropZone");
+  let depth = 0;
+  const hasFiles = e => !!e.dataTransfer && [...e.dataTransfer.types].includes("Files");
+  const hide = () => { depth = 0; zone.hidden = true; };
+  const take = files => {
+    const f = [...files].find(isAudioFile);
+    if (!f) { toast("That isn't an audio file. Drop an MP3, WAV or M4A."); return; }
+    if (!$("writeView") || $("writeView").hidden) { if (typeof setView === "function") setView("write"); }
+    loadBeatFile(f);
+    toast(`Loaded “${f.name}”`);
+  };
+  addEventListener("dragenter", e => { if (!hasFiles(e)) return; e.preventDefault(); depth++; zone.hidden = false; });
+  addEventListener("dragover", e => { if (!hasFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect = "copy"; });
+  addEventListener("dragleave", e => { if (!hasFiles(e)) return; depth = Math.max(0, depth - 1); if (!depth) zone.hidden = true; });
+  addEventListener("drop", e => { if (!hasFiles(e)) return; e.preventDefault(); hide(); take(e.dataTransfer.files); });
+  addEventListener("blur", hide);
+  document.addEventListener("paste", e => {
+    const files = e.clipboardData && e.clipboardData.files;
+    if (!files || !files.length || ![...files].some(isAudioFile)) return;
+    e.preventDefault();
+    take(files);
+  });
+})();
 
 // ---- player ----
 const player = $("player"), seek = $("seek");
