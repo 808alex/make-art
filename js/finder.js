@@ -2,6 +2,7 @@
 const RCOLS = [
   ["phrases", "Phrases & flips"],
   ["everyday", "Everyday"],
+  ["heavy", "Heavy words"],
   ["buzz", "Brands & buzz"],
   ["pieces", "Archive pieces"],
   ["rare", "Rare & distinct"]
@@ -20,7 +21,7 @@ function buildPoolCands(){
   };
   for (const k in POOLS) {
     if (k === "coined" || k === "everyday") continue;
-    for (const w of POOLS[k].words) add(w, k === "pieces" ? "pieces" : "buzz");
+    for (const w of POOLS[k].words) add(w, k === "pieces" || k === "heavy" ? k : "buzz");
   }
   for (const w of SAYINGS) add(w, "phrases");
 }
@@ -36,7 +37,7 @@ function runRhyme(){
   heard.innerHTML = `${Q.phrase ? "Matching the flow" : "Rhyming on"} <b>${esc(RH.readable(Q.T))}</b> · ${n} syllable${n > 1 ? "s" : ""}${Q.guessed ? " · sound guessed from spelling" : ""}`;
   const min = +document.getElementById("rhymeMin").value;
   const qn = RH.norm(q);
-  const out = { phrases: [], everyday: [], buzz: [], pieces: [], rare: [] };
+  const out = { phrases: [], everyday: [], heavy: [], buzz: [], pieces: [], rare: [] };
   for (const o of RH.words) {
     if (!o.S.length || o.w === qn || poolSet.has(o.w)) continue;
     const r = RH.scoreWord(Q, o);

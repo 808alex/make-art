@@ -29,7 +29,7 @@ Drag an MP3 or WAV anywhere onto the page. Make Art detects the **BPM and key** 
 Words in the same rhyme family light up in the same colour as you write, and every bar shows its syllable count. Words you lean on too much across your songs get a wavy underline, so you catch "drip ×12" before anyone else does.
 
 ### 🔎 A rhyme finder that thinks in flows
-Perfect rhymes, slant rhymes and multis, each scored 0–100. Type two or three words and it matches the whole flow ("call you" → "ball do"). Results are sorted into Everyday, Brands & buzz, Archive pieces and Rare & distinct. Tap one and it goes straight into your lyrics.
+Perfect rhymes, slant rhymes and multis, each scored 0–100. Type two or three words and it matches the whole flow ("call you" → "ball do"). Results are sorted into Everyday, **Heavy words**, Brands & buzz, Archive pieces and Rare & distinct. Tap one and it goes straight into your lyrics.
 
 <img src="docs/img/rhymes.png" width="560" alt="The rhyme finder in the Grape theme showing phrases for glow, like nice and slow, go with the flow and easy come easy go, plus everyday words and brand names.">
 
@@ -43,6 +43,7 @@ Save a line the second it hits you. Search your bars, filter by rhyme sound, and
 - Save the producer, link and licence with each beat. Beats that aren't cleared for release get flagged before you drop.
 - Mark beat times like `[1:24]` in your lyrics, jump to them, or loop that part
 - A word generator for when you're stuck: mostly calm everyday words, with a bit of slang, labels, cars and places mixed in
+- **Heavy words:** 800+ hand-picked words with weight, like sovereign, cauldron, dishonor, arson and disillusioned. Philosophy, scripture, empires, old trades, loaded objects and myth. They're the kind of word that sparks a bar. They have their own column in the rhyme finder and their own pool in the generator.
 
 ## 🎨 Five themes, light and dark
 
@@ -82,6 +83,7 @@ css/styles.css       layout and components; colour themes and font tokens at the
 css/look.css         theme picker, zoom, tour and all motion
 js/engine.js         rhyme engine: pronunciations, scoring, phrase builder
 js/sayings.js        sayings used by the phrase column
+js/heavy.js          the Heavy words list (generator pool + rhyme finder column)
 js/generator.js      word pools, generator, stash, shared helpers (esc, toast, copy)
 js/finder.js         rhyme finder UI
 js/studio.js         songs, saving and sync, beat loading, player basics, Space / arrow keys
@@ -97,7 +99,8 @@ site/                landing page for GitHub Pages (plus favicon and screenshot)
 docs/img/            screenshots used in this README
 tools/build_site.py  builds the Pages site into _site/
 tools/publish_pages.sh  builds the site and pushes it to the gh-pages branch
-tools/               also holds the scripts that build data/rhymes.txt
+tools/               also holds the scripts that build data/rhymes.txt, plus
+                     extra_words.txt / add_extra.py for Heavy words the dictionary lacks
 ```
 
 ### The website (GitHub Pages)
@@ -131,6 +134,7 @@ This lives in `js/studio.js` (`initCloud`, `saveSong`, `applySnapshot`, `syncBea
 pip install cmudict wordfreq
 python3 tools/build_dict.py   # writes rhymes.txt
 python3 tools/enc.py          # compresses it to rhymes.dat, then copy to data/rhymes.txt
+python3 tools/add_extra.py    # adds the Heavy words the dictionary is missing
 ```
 
 ## 📄 Licence

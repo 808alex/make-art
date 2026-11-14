@@ -1,0 +1,51 @@
+# Extra pronunciations (ARPAbet) for Heavy words missing from data/rhymes.txt.
+# From the CMU Pronouncing Dictionary where it has them, otherwise written by hand.
+# tools/add_extra.py appends any of these that data/rhymes.txt doesn't have yet.
+gethsemane|G EH0 TH S EH1 M AH0 N IY0
+jezebel|JH EH1 Z AH0 B EH2 L
+persephone|P ER0 S EH1 F AH0 N IY0
+pompeii|P AA0 M P EY1
+sisyphus|S IH1 S AH0 F AH0 S
+avarice|AE1 V ER0 AH0 S
+belladonna|B EH2 L AH0 D AA1 N AH0
+birdcage|B ER1 D K EY0 JH
+bramble|B R AE1 M B AH0 L
+candelabra|K AE2 N D AH0 L AA1 B R AH0
+catacomb|K AE1 T AH0 K OW2 M
+chrysanthemum|K R IH0 S AE1 N TH AH0 M AH0 M
+cornfield|K AO1 R N F IY2 L D
+decanter|D IH0 K AE1 N T ER0
+embalm|EH0 M B AA1 M
+famished|F AE1 M IH0 SH T
+ferryman|F EH1 R IY0 M AH0 N
+foxglove|F AA1 K S G L AH2 V
+gramophone|G R AE1 M AH0 F OW2 N
+gravedigger|G R EY1 V D IH2 G ER0
+harmer|HH AA1 R M ER0
+inkwell|IH1 NG K W EH2 L
+lamplighter|L AE1 M P L AY2 T ER0
+laudanum|L AO1 D AH0 N AH0 M
+lioness|L AY1 AH0 N AH0 S
+lucidity|L UW0 S IH1 D IH0 T IY0
+manacles|M AE1 N AH0 K AH0 L Z
+marionette|M EH2 R IY0 AH0 N EH1 T
+matchstick|M AE1 CH S T IH2 K
+metronome|M EH1 T R AH0 N OW2 M
+mongrel|M AA1 NG G R AH0 L
+morose|M ER0 OW1 S
+nightshade|N AY1 CH EY2 D
+nihilist|N AY1 AH0 L IH0 S T
+oleander|OW1 L IY0 AE2 N D ER0
+regicide|R EH1 JH AH0 S AY2 D
+ribcage|R IH1 B K EY2 JH
+ringmaster|R IH1 NG M AE2 S T ER0
+scepter|S EH1 P T ER0
+seraph|S EH1 R AH0 F
+sharecropper|SH EH1 R K R AA2 P ER0
+sleepwalk|S L IY1 P W AO2 K
+straitjacket|S T R EY1 T JH AE2 K AH0 T
+sundial|S AH1 N D AY2 L
+vapid|V AE1 P IH0 D
+warpath|W AO1 R P AE2 TH
+wisteria|W IH0 S T IH1 R IY0 AH0
+zealot|Z EH1 L AH0 T

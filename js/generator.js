@@ -7,6 +7,7 @@ const POOLS = {
   pieces: { label: "Archive pieces", words: ["Tabi boots","Geobaskets","Ramones","Riot bomber","astro biker","skull cashmere","Scab jacket","mesh top","cross patch denim","shark hoodie","GATs","Triple S","skinny denim '07","ghost piece","boro jacket","FBT moccasins","Pleats Please","wool gabardine coat","orb necklace","Alpha SV","XT-6","Shox TL","Air Max 95","Alcatraz cargos","Maya puffer","Detroit jacket","racing jacket","bondage trousers","MA-1","kilt","leather blouson","cargo flares","bumster","tank top","chain wallet","trucker hat","cross pendant","tennis chain","Cuban link","grillz","stacked denim","drop crotch","balaclava","beanie","durag","shutter shades","Juliet sunglasses","goggles","utility vest","tactical rig","waxed jacket","shearling","fur trapper","rhinestone tee","distressed hoodie","pony hair boots","creepers","Dunks","Air Force 1","TN","Foamposite","Rimowa","Goyard tote","Margiela Replica","painter pants"] },
   cars: { label: "Whips", words: ["Murciélago","Countach","Huracán","Urus","Aventador","Diablo","Cullinan","Phantom","Wraith","Ghost","Maybach","Bentayga","Testarossa","Enzo","LaFerrari","F40","Skyline R34","Supra MK4","RX-7","Evo IX","STI","E30 M3","E46","G-Wagon","911 Turbo","Carrera GT","Black Series","Hellcat","Trackhawk","Escalade","Range Rover","Cayenne","Benz","Bimmer","Lambo","'Rari","Chiron","Veyron","Zonda","Huayra","Jesko","P1","Senna","Viper","C8","Cutlass","'64 Impala","Monte Carlo","Grand National","S-Class","2JZ","Spyder","drophead","coupé","Silvia S15","NSX","Integra Type R","Golf R32","Audi R8","Quattro","Stingray","Mustang Boss","Charger","Celica","Corolla AE86","Miata","Defender","Land Cruiser","Hilux","Mulsanne","Continental GT"] },
   places: { label: "Cities & cribs", words: ["Monaco","Monte Carlo","Saint-Tropez","Ibiza","Dubai","Tokyo","Harajuku","Shibuya","Osaka","Seoul","Paris","Milan","Antwerp","Berlin","London","Peckham","Tottenham","Dublin","Atlanta","Houston","Memphis","Compton","Harlem","the Bronx","Miami","Lagos","Accra","Kingston","Medellín","Rio","São Paulo","Bel Air","Calabasas","Malibu","Hollywood Hills","Beverly Hills","Marbella","Lake Como","Zurich","Geneva","Reykjavík","Kyoto","Bangkok","Bali","Zanzibar","Havana","Copenhagen","Oslo","Riga","Tallinn","Amsterdam","Ginza","Roppongi","Hong Kong","Shanghai","Mumbai","Cape Town","Johannesburg","Toronto","Vancouver","penthouse","chateau","villa","mansion","trap house","duplex","loft","compound","estate","hacienda","brownstone","high-rise","crib","yacht","jet","condo","safe house","summer house","basement studio"] },
+  heavy: { label: "Heavy words", words: HEAVY_WORDS },
   coined: { label: "Coined", words: [] },
   yours: { label: "Yours", words: [] }
 };
@@ -32,6 +33,7 @@ let state = {
   stash: store.get("wp.stash", []),
   custom: store.get("wp.custom", "")
 };
+if (!store.get("wp.heavy.added", false)) { state.enabled.add("heavy"); store.set("wp.enabled2", [...state.enabled]); store.set("wp.heavy.added", true); }
 
 function parseCustom(){
   POOLS.yours.words = state.custom.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
@@ -82,7 +84,7 @@ function mutate(w){
 function rollOne(){
   const cats = [...state.enabled];
   if (!cats.length) return { w: "pick a pool", cat: "—", pinned: false };
-  const W = c => c === "everyday" ? 6 : c === "yours" ? 2 : 1;
+  const W = c => c === "everyday" ? 6 : c === "yours" || c === "heavy" ? 2 : 1;
   let r = Math.random() * cats.reduce((t, c) => t + W(c), 0), cat = cats[0];
   for (const c of cats) { r -= W(c); if (r < 0) { cat = c; break; } }
   if (cat === "coined") {

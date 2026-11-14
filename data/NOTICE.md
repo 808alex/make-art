@@ -7,4 +7,6 @@ About 42,000 English words with their pronunciations, one per line as `word|code
 
 Because of the second point, this file is shared under the Creative Commons Attribution-ShareAlike 4.0 licence: https://creativecommons.org/licenses/by-sa/4.0/
 
+The last few dozen lines are extra words used by the Heavy words list (`tools/extra_words.txt`): from the CMU dictionary where it has them, otherwise written by hand.
+
 Rebuild it with the scripts in `tools/`.
