@@ -100,7 +100,7 @@ button:focus-visible, textarea:focus-visible { outline: 2.5px solid var(--sticke
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 10px; }
 .card {
   position: relative; background: var(--panel); border: var(--bw) solid var(--line); border-radius: var(--rad-lg);
-  min-width: 0; display: grid;
+  min-width: 0; display: grid; container-type: inline-size;
 }
 .card.pinned { border-color: var(--accent); }
 .card .word {
@@ -108,11 +108,15 @@ button:focus-visible, textarea:focus-visible { outline: 2.5px solid var(--sticke
 }
 .card .word:focus-visible { outline: 2.5px solid var(--sticker); outline-offset: -2px; border-radius: var(--rad); }
 .card .w {
-  font-family: var(--display); font-weight: var(--dw); letter-spacing: var(--dtrack); font-size: 1.25rem; line-height: 1.1; overflow-wrap: anywhere; padding-right: 98px;
+  font-family: var(--display); font-weight: var(--dw); letter-spacing: var(--dtrack); line-height: 1.15; overflow-wrap: break-word;
+  font-size: clamp(.95rem, 8.4cqi, 1.3rem);
 }
-.card .tag { font: 700 10.5px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+/* long single words get a smaller size so they stay on one line */
+.card .w.long { font-size: clamp(.8rem, 6.6cqi, 1.15rem); }
+.card .w.xlong { font-size: clamp(.72rem, 5.4cqi, 1rem); }
+.card .tag { font: 700 10.5px/1.35 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding-right: 96px; min-height: 22px; display: flex; align-items: center; }
 .card .tag b { color: var(--accent); font-weight: 700; }
-.card .acts { position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; }
+.card .acts { position: absolute; bottom: 8px; right: 8px; display: flex; gap: 2px; }
 .icon {
   width: 30px; height: 30px; display: grid; place-items: center; border-radius: var(--rad); cursor: pointer;
   border: 0; background: transparent; color: var(--muted);

@@ -118,6 +118,12 @@ const ICON_STAR ='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
 
+// long words and long names get a smaller size so they stay on one line
+function sizeClass(w) {
+  w = String(w);
+  const word = Math.max(...w.split(/\s+/).map(t => t.length)), all = w.length;
+  return word >= 14 || all >= 17 ? " xlong" : word >= 10 || all >= 12 ? " long" : "";
+}
 function renderGrid(){
   const g = document.getElementById("grid");
   g.innerHTML = state.cards.map((c, i) => {
@@ -125,7 +131,7 @@ function renderGrid(){
     const inStash = state.stash.includes(c.w);
     return `<div class="card${c.pinned ? " pinned" : ""}${c.fresh ? " fresh" : ""}" style="--i:${i}">
       <button class="word" type="button" data-copy="${i}" aria-label="Copy ${esc(c.w)}">
-        <span class="w">${esc(c.w)}</span>
+        <span class="w${sizeClass(c.w)}">${esc(c.w)}</span>
         <span class="tag">${esc(label)}${c.note ? ` · <b>${esc(c.note)}</b>` : ""}</span>
       </button>
       <div class="acts">
