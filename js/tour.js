@@ -18,7 +18,7 @@
         list: ["Space plays and pauses (when you're not typing)", "← and → skip 5 seconds"] },
       { icon: "write", title: "Write", body: "Words that rhyme light up in the same colour, and every bar shows its syllable count. Mark beat time stamps a line so you can jump back to it.",
         list: ["Turn colours, syllables and other helpers on or off in Options"] },
-      { icon: "rhyme", title: "Rhymes on the side", body: "Type a word, or two or three, in the Rhyme Finder for perfect rhymes, slant rhymes and multis. Tap one to drop it into your lyrics. Heavy words gives you deeper, poetic picks. The Words tab has the random word generator." },
+      { icon: "rhyme", title: "Rhymes on the side", body: "Type a word, or two or three, in the Rhyme Finder for perfect rhymes, slant rhymes and multis. Tap one to drop it into your lyrics. Heavy words gives you deeper, poetic picks. The Words tab has the random word generator, and Ideas gives you something to write 4 or 8 bars about." },
       { icon: "vault", title: "Vault and EPs", body: "Got a bar but no song? Save it in the Vault. While you write, it suggests saved bars that fit your line. EP / Album puts your songs in order." },
       cloud
         ? { icon: "save", title: "Saved to your account", body: "Your songs, EPs, vault and beats sync to your Claude account, so they're there on every device you sign in on." }

@@ -98,17 +98,21 @@ renderStash();
 reroll();
 
 // ---- Rhymes / Words tabs in the tools column ----
+const TOOLS = { rhymes: ["rhymesPanel", "ttRhymes"], words: ["wordsPanel", "ttWords"], ideas: ["ideasPanel", "ttIdeas"] };
+const TOOL_ORDER = Object.keys(TOOLS);
 function showTool(name, opts) {
-  const words = name === "words";
-  const rp = document.getElementById("rhymesPanel"), wp = document.getElementById("wordsPanel");
-  const was = rp.hidden ? "words" : "rhymes";
-  rp.hidden = words; wp.hidden = !words;
-  document.getElementById("ttRhymes").setAttribute("aria-selected", String(!words));
-  document.getElementById("ttWords").setAttribute("aria-selected", String(words));
-  try { localStorage.setItem("ma.tool", words ? "words" : "rhymes"); } catch (e) {}
+  if (!TOOLS[name]) name = "rhymes";
+  const was = TOOL_ORDER.find(k => !document.getElementById(TOOLS[k][0]).hidden) || "rhymes";
+  for (const k of TOOL_ORDER) {
+    document.getElementById(TOOLS[k][0]).hidden = k !== name;
+    document.getElementById(TOOLS[k][1]).setAttribute("aria-selected", String(k === name));
+  }
+  // "Tapping a word" only matters for the rhyme and word lists
+  document.querySelector(".tapmode").hidden = name === "ideas";
+  try { localStorage.setItem("ma.tool", name); } catch (e) {}
   if (was !== name && !(opts && opts.instant)) {
-    const el = words ? wp : rp;
-    el.style.setProperty("--from", words ? "18px" : "-18px");
+    const el = document.getElementById(TOOLS[name][0]);
+    el.style.setProperty("--from", TOOL_ORDER.indexOf(name) > TOOL_ORDER.indexOf(was) ? "18px" : "-18px");
     el.classList.remove("enter"); void el.offsetWidth; el.classList.add("enter");
     document.getElementById("tools").scrollTop = 0;
   }
@@ -121,5 +125,5 @@ document.querySelector(".ttabs").addEventListener("click", e => {
 (function () {
   let t = "rhymes";
   try { t = localStorage.getItem("ma.tool") || "rhymes"; } catch (e) {}
-  showTool(t === "words" ? "words" : "rhymes", { instant: true });
+  showTool(t, { instant: true });
 })();

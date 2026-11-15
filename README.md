@@ -33,6 +33,18 @@ Perfect rhymes, slant rhymes and multis, each scored 0–100. Type two or three 
 
 <img src="docs/img/rhymes.png" width="560" alt="The rhyme finder in the Grape theme showing phrases for glow, like nice and slow, go with the flow and easy come easy go, plus everyday words and brand names.">
 
+### 🧭 Ideas when you don't know what to say
+The **Ideas** tab gives you something to write 4 or 8 bars about, so a verse stays on one subject instead of going all over the place. Pick from 18 themes, including Faith, Jesus Christ, Her, Agape, Finding a wife, Visions, The system, Truman Show, Round the world, Roots, Dublin, College, Who am I, Cathedrals, Nature, My own lane, Late night and Mountains.
+
+Each idea gives you:
+- a **prompt** to write about
+- an **angle**: a point of view or a structure, like "start with a question and don't answer it until the last bar"
+- a few **images** to use, which open in the rhyme finder when you tap them
+
+Turn on **Mix two themes** to put two subjects together (Faith × Late night, Roots × Cathedrals). **Write this** adds the idea to your song as a note in square brackets, which the syllable counts and rhyme colours skip.
+
+<img src="docs/img/ideas.png" width="560" alt="The Ideas tab: theme chips, a 4 or 8 bar switch, and an idea card for Faith with a prompt, an angle and four images to use.">
+
 ### 💡 A vault for loose bars
 Save a line the second it hits you. Search your bars, filter by rhyme sound, and drop one into a song. While you write, the vault suggests saved bars that rhyme with your line or share its topic.
 
@@ -85,7 +97,8 @@ js/engine.js         rhyme engine: pronunciations, scoring, phrase builder
 js/sayings.js        sayings used by the phrase column
 js/heavy.js          the Heavy words list (generator pool + rhyme finder column)
 js/generator.js      word pools, generator, stash, shared helpers (esc, toast, copy)
-js/finder.js         rhyme finder UI
+js/finder.js         rhyme finder UI and the Rhymes / Words / Ideas tabs
+js/ideas.js          Bar Ideas: themes, prompts, angles and images
 js/studio.js         songs, saving and sync, beat loading, player basics, Space / arrow keys
 js/extras.js         rhyme colours, syllables, A–B loop, speed, BPM/key, EP / album
 js/vault.js          bar vault

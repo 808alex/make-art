@@ -225,11 +225,12 @@
       </div>
     </section>
 
-    <aside class="tools" id="tools" aria-label="Rhymes and words" data-lenis-prevent>
+    <aside class="tools" id="tools" aria-label="Rhymes, words and ideas" data-lenis-prevent>
       <div class="toolbar">
         <div class="stabs ttabs" role="tablist" aria-label="Tools">
           <button type="button" role="tab" id="ttRhymes" data-tool="rhymes" aria-selected="true" aria-controls="rhymesPanel">Rhymes</button>
           <button type="button" role="tab" id="ttWords" data-tool="words" aria-selected="false" aria-controls="wordsPanel">Words</button>
+          <button type="button" role="tab" id="ttIdeas" data-tool="ideas" aria-selected="false" aria-controls="ideasPanel">Ideas</button>
         </div>
         <div class="tapmode">
           <span class="label">Tapping a word</span>
@@ -303,6 +304,29 @@
           <textarea id="custom" placeholder="e.g. Rimowa, Ballarat, bando, Celica, Jacquemus"></textarea>
         </section>
       </div>
+
+      <div class="tpanel" id="ideasPanel" role="tabpanel" aria-labelledby="ttIdeas" hidden>
+        <section class="ideas" id="ideas">
+          <div class="sechead">
+            <h2>Bar Ideas</h2>
+            <span class="label">Something to write about</span>
+          </div>
+          <div class="controls">
+            <div class="row idea-themehead">
+              <div class="label">Themes</div>
+              <button class="ghost" id="ideaAll" type="button">All / none</button>
+            </div>
+            <div class="chips" id="ideaThemes"></div>
+            <div class="row">
+              <div class="seg" id="ideaBars"></div>
+              <label class="idea-mixopt"><input type="checkbox" id="ideaMix"> Mix two themes</label>
+              <button class="reroll" id="ideaNew" type="button">New idea</button>
+            </div>
+            <div class="hint" id="ideaHint"></div>
+          </div>
+          <article class="idea" id="ideaCard" aria-live="polite" hidden></article>
+        </section>
+      </div>
     </aside>
   </div>
 </div>
@@ -355,6 +379,7 @@
 <script src="js/heavy.js"></script>
 <script src="js/generator.js"></script>
 <script src="js/finder.js"></script>
+<script src="js/ideas.js"></script>
 <script src="js/studio.js"></script>
 <script src="js/extras.js"></script>
 <script src="js/vault.js"></script>
