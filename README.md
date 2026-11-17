@@ -21,7 +21,7 @@ A free lyrics studio that runs in your browser. Drop in a beat, write your verse
 ## ✨ What it does
 
 ### 🎧 Bring a beat, get the numbers
-Drag an MP3 or WAV anywhere onto the page. Make Art detects the **BPM and key** straight away, then gives you an A–B loop, a bar counter, and speed from 0.7× to 1.25× with or without keeping the pitch. Beats in browser-only mode stay on your device.
+Drag an MP3 or WAV anywhere onto the page. Make Art detects the **BPM and key** straight away, then gives you an A–B loop, a bar counter, a volume slider that remembers your level (handy when beats come in loud), and speed from 0.7× to 1.25× with or without keeping the pitch. Beats in browser-only mode stay on your device.
 
 <img src="docs/img/beat.png" width="560" alt="The beat dropdown open in the dark Lagoon theme: 140 BPM or 70, F minor or A flat major, with producer Nightshade, a WAV lease and a link to the beat's page.">
 

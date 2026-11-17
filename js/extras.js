@@ -622,3 +622,34 @@ $("optHl").checked = hlOn; $("optSyl").checked = sylOn;
   // the rhyme dictionary loads after the page; recolour once it's ready
   const wait = setInterval(() => { if (RH.loaded()) { clearInterval(wait); renderHL(); } }, 300);
 })();
+
+// ---- Volume: remembered between beats, since most beats come in loud ----
+(function () {
+  const vol = $("vol"), range = $("volume"), btn = $("volBtn"), pct = $("volPct");
+  // iPhone and iPad ignore audio.volume, so the slider would do nothing there
+  const probe = new Audio(); probe.volume = 0.5;
+  if (probe.volume !== 0.5) { vol.hidden = true; return; }
+  let level = 80, muted = false;
+  try { const v = parseInt(localStorage.getItem("ma.vol"), 10); if (v >= 0 && v <= 100) level = v; muted = localStorage.getItem("ma.mute") === "1"; } catch (e) {}
+  const small = () => matchMedia("(max-width: 520px)").matches;
+  function apply() {
+    // squared so the bottom half of the slider gives fine control over quiet levels
+    audio.volume = muted ? 0 : Math.pow(level / 100, 2);
+    range.value = level; pct.textContent = (muted ? 0 : level) + "%";
+    range.style.setProperty("--fill", (muted ? 0 : level) + "%");
+    const off = muted || level === 0;
+    vol.dataset.level = off ? "off" : level < 45 ? "low" : "high";
+    btn.setAttribute("aria-label", small() ? "Volume" : off ? "Unmute" : "Mute");
+    btn.title = small() ? "Volume" : off ? "Unmute" : "Mute";
+    try { localStorage.setItem("ma.vol", String(level)); localStorage.setItem("ma.mute", muted ? "1" : "0"); } catch (e) {}
+  }
+  range.addEventListener("input", () => { level = +range.value; muted = false; apply(); });
+  btn.addEventListener("click", e => {
+    if (small()) { vol.classList.toggle("open"); e.stopPropagation(); return; }
+    if (level === 0) { level = 60; muted = false; } else muted = !muted;
+    apply();
+  });
+  // on phones the slider pops up above the button; tapping anywhere else closes it
+  document.addEventListener("pointerdown", e => { if (vol.classList.contains("open") && !vol.contains(e.target)) vol.classList.remove("open"); });
+  apply();
+})();

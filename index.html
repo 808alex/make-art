@@ -344,6 +344,10 @@
       <div class="seekwrap"><div class="abzone" id="abZone" hidden></div><input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="Seek"></div>
     </div>
     <button class="pbtn loop" type="button" id="loopBtn" aria-pressed="true" aria-label="Loop beat" title="Loop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></button>
+    <div class="vol" id="vol">
+      <button class="pbtn" type="button" id="volBtn" aria-label="Mute" title="Mute"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor" stroke="none"/><path class="w1" d="M15.5 8.5a5 5 0 0 1 0 7"/><path class="w2" d="M19 5a10 10 0 0 1 0 14"/><path class="x" d="M16 9l6 6M22 9l-6 6"/></svg></button>
+      <div class="volpop"><input type="range" id="volume" min="0" max="100" step="1" value="80" aria-label="Volume"><span class="volpct" id="volPct">80%</span></div>
+    </div>
   </div>
   <div class="pl-extra">
     <span class="barpos" id="barPos" title="Bar and beat, worked out from the BPM">Bar –</span>
